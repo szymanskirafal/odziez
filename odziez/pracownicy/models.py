@@ -1,5 +1,5 @@
 from django.db import models
-"""
+
 
 class Stanowisko(models.Model):
     PRACOWNIK = 'PR'
@@ -15,7 +15,7 @@ class Stanowisko(models.Model):
         )
     czasokres_wymiany = models.PositiveSmallIntegerField(max_length = 2)
 
-"""
+
 class MiejscePracy(models.Model):
     STACJA = 'ST'
     BAZA = 'BA'
