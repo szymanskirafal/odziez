@@ -11,23 +11,6 @@ class TimeStampedModel(models.Model):
         abstract = True
 
 
-class Stanowisko(models.Model):
-    SPRZEDAWCA = 'SPRZ'
-    PODJAZDOWY = 'PODJ'
-    KIEROWNIK = 'KIER'
-    RODZAJ_STANOWISKA = [
-        (SPRZEDAWCA, 'Sprzedawca'),
-        (PODJAZDOWY, 'Podjazdowy'),
-        (KIEROWNIK, 'Kierownik'),
-        ]
-    rodzaj_stanowiska = models.CharField(
-        max_length = 2,
-        choices = RODZAJ_STANOWISKA,
-        default = SPRZEDAWCA,
-        )
-    czasokres_wymiany = models.PositiveSmallIntegerField()
-
-
 class MiejscePracy(models.Model):
     STACJA = 'ST'
     BAZA = 'BA'
@@ -41,25 +24,51 @@ class MiejscePracy(models.Model):
         default = STACJA,
         )
     nazwa = models.CharField(max_length = 150)
-    ul_i_nr = models.CharField(max_length = 50)
-    kod_pocztowy = models.CharField(max_length = 8)
+    ulica_nr = models.CharField(max_length = 50)
     miejscowosc = models.CharField(max_length = 50)
+    kod_pocztowy = models.CharField(max_length = 8)
     tel = models.CharField(max_length = 13)
     email = models.EmailField()
 
+    class Meta:
+        verbose_name_plural = 'Miejsca Pracy'
+
+    def __str__(self):
+        return self.nazwa + ' ' + self.miejscowosc
+
+
+class Stanowisko(models.Model):
+    nazwa = models.CharField(max_length = 150)
+    opis = models.CharField(max_length = 300)
+
+    class Meta:
+        verbose_name_plural = 'Stanowiska'
+
+    def __str__(self):
+        return self.nazwa
+
 
 class Etat(TimeStampedModel):
-    wielkosc_etatu = models.DecimalField(max_digits = 3, decimal_places = 2)
-    stanowisko = models.ForeignKey(
-        Stanowisko,
-        on_delete = models.CASCADE,
-        related_name = 'pracownicy',
-        )
     miejsce_pracy = models.ForeignKey(
         MiejscePracy,
         on_delete = models.CASCADE,
-        related_name = 'pracownicy',
+        related_name = 'pracujacy_w_tym_miejscu',
         )
+    stanowisko = models.ForeignKey(
+        Stanowisko,
+        on_delete = models.CASCADE,
+        related_name = 'pracujacy_na_tym_stanowisku',
+        )
+    wielkosc_etatu = models.DecimalField(max_digits = 3, decimal_places = 2)
+
+    class Meta:
+        verbose_name_plural = 'Etaty'
+
+    def __str__(self):
+        etat = str(self.wielkosc_etatu)
+        stanowisko = str(self.stanowisko)
+        miejsce_pracy = str(self.miejsce_pracy)
+        return etat + ' ' + stanowisko + ' ' + miejsce_pracy
 
 
 class Osoba(TimeStampedModel):
@@ -96,8 +105,14 @@ class Pracownik(Osoba):
     etat = models.ForeignKey(
         Etat,
         on_delete = models.CASCADE,
-        related_name = 'pracownicy',
+        related_name = 'na_etacie',
         )
+
+    class Meta:
+        verbose_name_plural = 'Pracownicy'
+
+    def __str__(self):
+        return self.imie + self.nazwisko
 
 
 class Kierownik(Osoba):
@@ -109,9 +124,18 @@ class Kierownik(Osoba):
         related_name = 'kierownicy',
         )
 
+    class Meta:
+        verbose_name_plural = 'Kierownicy'
+
+    def __str__(self):
+        return self.imie + ' ' + self.nazwisko + ' ' + str(self.etat)
+
 
 class Nadzorca(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE)
     imie = models.CharField(max_length = 15)
     nazwisko = models.CharField(max_length = 40)
     email = models.EmailField()
+
+    class Meta:
+        verbose_name_plural = 'Nadzorcy'

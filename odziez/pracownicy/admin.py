@@ -1,10 +1,17 @@
 from django.contrib import admin
-"""
-from .models import Etat, MiejscePracy, Nadzorca, Pracownik, Stanowisko
+
+from .models import (
+    Etat, Kierownik, MiejscePracy, Nadzorca, Pracownik, Stanowisko,
+)
 
 
 @admin.register(Etat)
 class EtatAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Kierownik)
+class KierownikAdmin(admin.ModelAdmin):
     pass
 
 
@@ -22,7 +29,7 @@ class NadzorcaAdmin(admin.ModelAdmin):
 class PracownikAdmin(admin.ModelAdmin):
     pass
 
+
 @admin.register(Stanowisko)
 class StanowiskoAdmin(admin.ModelAdmin):
     pass
-"""
