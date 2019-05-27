@@ -1,17 +1,29 @@
 from django.db import models
 
+from odziez.users.models import User
+
+
+class TimeStampedModel(models.Model):
+    created = models.DateTimeField(auto_now_add = True)
+    modified = models.DateTimeField(auto_now = True)
+
+    class Meta:
+        abstract = True
+
 
 class Stanowisko(models.Model):
-    PRACOWNIK = 'PR'
-    KIEROWNIK = 'KI'
+    SPRZEDAWCA = 'SPRZ'
+    PODJAZDOWY = 'PODJ'
+    KIEROWNIK = 'KIER'
     RODZAJ_STANOWISKA = [
-        (PRACOWNIK, 'Pracownik'),
+        (SPRZEDAWCA, 'Sprzedawca'),
+        (PODJAZDOWY, 'Podjazdowy'),
         (KIEROWNIK, 'Kierownik'),
         ]
     rodzaj_stanowiska = models.CharField(
         max_length = 2,
         choices = RODZAJ_STANOWISKA,
-        default = PRACOWNIK,
+        default = SPRZEDAWCA,
         )
     czasokres_wymiany = models.PositiveSmallIntegerField()
 
@@ -28,9 +40,15 @@ class MiejscePracy(models.Model):
         choices = RODZAJ_MIEJSCA_PRACY,
         default = STACJA,
         )
+    nazwa = models.CharField(max_length = 150)
+    ul_i_nr = models.CharField(max_length = 50)
+    kod_pocztowy = models.CharField(max_length = 8)
+    miejscowosc = models.CharField(max_length = 50)
+    tel = models.CharField(max_length = 13)
+    email = models.EmailField()
+"""
 
-
-class Etat(models.Model):
+class Etat(TimeStampedModel):
     wielkosc_etatu = models.DecimalField(max_digits = 3, decimal_places = 2)
     stanowisko = models.ForeignKey(
         Stanowisko,
@@ -44,7 +62,13 @@ class Etat(models.Model):
         )
 
 
-class Pracownik(models.Model):
+class Osoba(TimeStampedModel):
+    KOBIETA = 'K'
+    MEZCZYZNA = 'M'
+    PLEC = [
+        (KOBIETA, 'Kobieta'),
+        (MEZCZYZNA, 'Mężczyzna'),
+        ]
     XL = 'XL'
     L = 'L'
     M = 'M'
@@ -55,8 +79,7 @@ class Pracownik(models.Model):
         (M, 'M'),
         (S, 'S'),
         ]
-    created = models.DateTimeField(auto_now_add = True)
-    modified = models.DateTimeField(auto_now = True)
+    plec = models.CharField(max_length = 1, choices = PLEC,)
     imie = models.CharField(max_length = 15)
     nazwisko = models.CharField(max_length = 40)
     wzrost = models.PositiveSmallIntegerField()
@@ -64,7 +87,12 @@ class Pracownik(models.Model):
     szerokosc_w_pasie = models.PositiveSmallIntegerField()
     rozmiar = models.CharField(max_length = 2, choices = ROZMIAR,)
     nr_buta = models.PositiveSmallIntegerField()
-    email = models.EmailField(blank = True)
+
+    class Meta:
+        abstract = True
+
+
+class Pracownik(Osoba):
     etat = models.ForeignKey(
         Etat,
         on_delete = models.CASCADE,
@@ -72,9 +100,18 @@ class Pracownik(models.Model):
         )
 
 
+class Kierownik(Osoba):
+    user = models.OneToOneField(User, on_delete = models.CASCADE)
+    email = models.EmailField()
+    etat = models.ForeignKey(
+        Etat,
+        on_delete = models.CASCADE,
+        related_name = 'pracownicy',
+        )
+"""
+
 class Nadzorca(models.Model):
-    created = models.DateTimeField(auto_now_add = True)
-    modified = models.DateTimeField(auto_now = True)
+    user = models.OneToOneField(User, on_delete = models.CASCADE)
     imie = models.CharField(max_length = 15)
     nazwisko = models.CharField(max_length = 40)
     email = models.EmailField()

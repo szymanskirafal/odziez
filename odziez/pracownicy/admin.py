@@ -1,5 +1,5 @@
 from django.contrib import admin
-
+"""
 from .models import Etat, MiejscePracy, Nadzorca, Pracownik, Stanowisko
 
 
@@ -25,3 +25,4 @@ class PracownikAdmin(admin.ModelAdmin):
 @admin.register(Stanowisko)
 class StanowiskoAdmin(admin.ModelAdmin):
     pass
+"""
