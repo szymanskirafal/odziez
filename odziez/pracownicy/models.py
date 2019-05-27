@@ -15,7 +15,7 @@ class Stanowisko(models.Model):
         )
     czasokres_wymiany = models.PositiveSmallIntegerField(max_length = 2)
 
-
+"""
 class MiejscePracy(models.Model):
     STACJA = 'ST'
     BAZA = 'BA'
@@ -28,7 +28,7 @@ class MiejscePracy(models.Model):
         choices = RODZAJ_MIEJSCA_PRACY,
         default = STACJA,
         )
-
+"""
 
 class Etat(models.Model):
     wielkosc_etatu = models.DecimalField(max_digits = 1, decimal_places = 2)
