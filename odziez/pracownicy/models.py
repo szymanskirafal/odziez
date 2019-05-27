@@ -46,7 +46,7 @@ class MiejscePracy(models.Model):
     miejscowosc = models.CharField(max_length = 50)
     tel = models.CharField(max_length = 13)
     email = models.EmailField()
-"""
+
 
 class Etat(TimeStampedModel):
     wielkosc_etatu = models.DecimalField(max_digits = 3, decimal_places = 2)
@@ -106,9 +106,9 @@ class Kierownik(Osoba):
     etat = models.ForeignKey(
         Etat,
         on_delete = models.CASCADE,
-        related_name = 'pracownicy',
+        related_name = 'kierownicy',
         )
-"""
+
 
 class Nadzorca(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE)
