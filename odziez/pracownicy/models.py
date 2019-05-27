@@ -31,7 +31,7 @@ class MiejscePracy(models.Model):
 
 
 class Etat(models.Model):
-    wielkosc_etatu = models.DecimalField(max_digits = 1, decimal_places = 2)
+    wielkosc_etatu = models.DecimalField(max_digits = 3, decimal_places = 2)
     stanowisko = models.ForeignKey(
         Stanowisko,
         on_delete = models.CASCADE,
@@ -43,9 +43,6 @@ class Etat(models.Model):
         related_name = 'pracownicy',
         )
 
-    class Meta:
-        abstract = True
-
 
 class Pracownik(models.Model):
     XL = 'XL'
@@ -56,16 +53,17 @@ class Pracownik(models.Model):
         (XL, 'XL'),
         (L, 'L'),
         (M, 'M'),
-        (S, 'S'),]
+        (S, 'S'),
+        ]
     created = models.DateTimeField(auto_now_add = True)
     modified = models.DateTimeField(auto_now = True)
     imie = models.CharField(max_length = 15)
     nazwisko = models.CharField(max_length = 40)
-	wzrost = models.PositiveSmallIntegerField(max_length = 3)
-    kolnierzyk = models.PositiveSmallIntegerField(max_length = 2)
-	szerokosc_w_pasie = models.PositiveSmallIntegerField(max_length = 3)
+    wzrost = models.PositiveSmallIntegerField()
+    kolnierzyk = models.PositiveSmallIntegerField()
+    szerokosc_w_pasie = models.PositiveSmallIntegerField()
     rozmiar = models.CharField(max_length = 2, choices = ROZMIAR,)
-	nr_buta = models.PositiveSmallIntegerField(max_length = 2)
+    nr_buta = models.PositiveSmallIntegerField()
     email = models.EmailField(blank = True)
     etat = models.ForeignKey(
         Etat,
