@@ -13,7 +13,7 @@ class Stanowisko(models.Model):
         choices = RODZAJ_STANOWISKA,
         default = PRACOWNIK,
         )
-    czasokres_wymiany = models.PositiveSmallIntegerField(max_length = 2)
+    czasokres_wymiany = models.PositiveSmallIntegerField()
 
 
 class MiejscePracy(models.Model):
@@ -28,7 +28,7 @@ class MiejscePracy(models.Model):
         choices = RODZAJ_MIEJSCA_PRACY,
         default = STACJA,
         )
-"""
+
 
 class Etat(models.Model):
     wielkosc_etatu = models.DecimalField(max_digits = 1, decimal_places = 2)
@@ -46,7 +46,7 @@ class Etat(models.Model):
     class Meta:
         abstract = True
 
-
+"""
 class Pracownik(models.Model):
     XL = 'XL'
     L = 'L'
