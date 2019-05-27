@@ -46,7 +46,7 @@ class Etat(models.Model):
     class Meta:
         abstract = True
 
-"""
+
 class Pracownik(models.Model):
     XL = 'XL'
     L = 'L'
@@ -72,7 +72,7 @@ class Pracownik(models.Model):
         on_delete = models.CASCADE,
         related_name = 'pracownicy',
         )
-"""
+
 
 class Nadzorca(models.Model):
     created = models.DateTimeField(auto_now_add = True)
