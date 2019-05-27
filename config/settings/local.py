@@ -61,3 +61,4 @@ INSTALLED_APPS += ["django_extensions"]  # noqa F405
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+DJANGO_READ_DOT_ENV_FILE=True
