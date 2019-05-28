@@ -68,7 +68,7 @@ class Etat(TimeStampedModel):
         etat = str(self.wielkosc_etatu)
         stanowisko = str(self.stanowisko)
         miejsce_pracy = str(self.miejsce_pracy)
-        return etat + ' ' + stanowisko + ' ' + miejsce_pracy
+        return 'etat - ' + etat + '  ' + stanowisko + ' ' + miejsce_pracy
 
 
 class Osoba(TimeStampedModel):
@@ -112,17 +112,12 @@ class Pracownik(Osoba):
         verbose_name_plural = 'Pracownicy'
 
     def __str__(self):
-        return self.imie + self.nazwisko
+        return self.imie + ' ' + self.nazwisko  + ' ' + str(self.etat)
 
 
-class Kierownik(Osoba):
+class Kierownik(Pracownik):
     user = models.OneToOneField(User, on_delete = models.CASCADE)
     email = models.EmailField()
-    etat = models.ForeignKey(
-        Etat,
-        on_delete = models.CASCADE,
-        related_name = 'kierownicy',
-        )
 
     class Meta:
         verbose_name_plural = 'Kierownicy'

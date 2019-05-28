@@ -74,9 +74,11 @@ THIRD_PARTY_APPS = [
     "rest_framework",
 ]
 LOCAL_APPS = [
+    # Your stuff: custom apps go here
     "odziez.users.apps.UsersConfig",
     "odziez.pracownicy.apps.PracownicyConfig",
-    # Your stuff: custom apps go here
+    "odziez.ubrania.apps.UbraniaConfig",
+
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
