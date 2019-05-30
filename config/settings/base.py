@@ -75,9 +75,10 @@ THIRD_PARTY_APPS = [
 ]
 LOCAL_APPS = [
     # Your stuff: custom apps go here
-    "odziez.users.apps.UsersConfig",
     "odziez.pracownicy.apps.PracownicyConfig",
     "odziez.ubrania.apps.UbraniaConfig",
+    "odziez.users.apps.UsersConfig",
+    "odziez.zamowienia.apps.ZamowieniaConfig",
 
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
