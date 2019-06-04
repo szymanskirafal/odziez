@@ -75,6 +75,7 @@ THIRD_PARTY_APPS = [
 ]
 LOCAL_APPS = [
     # Your stuff: custom apps go here
+    #"odziez.cart.apps.CartConfig",
     "odziez.pracownicy.apps.PracownicyConfig",
     "odziez.ubrania.apps.UbraniaConfig",
     "odziez.users.apps.UsersConfig",
@@ -267,3 +268,5 @@ SOCIALACCOUNT_ADAPTER = "odziez.users.adapters.SocialAccountAdapter"
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+# cart
+CART_SESSION_ID = 'cart'

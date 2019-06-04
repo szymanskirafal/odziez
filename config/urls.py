@@ -16,6 +16,9 @@ urlpatterns = [
     path("users/", include("odziez.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
+    path("pracownicy/", include("pracownicy.urls", namespace="pracownicy")),
+    path("ubrania/", include("ubrania.urls", namespace="ubrania")),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from django.views import generic
 
-# Create your views here.
+from .models import RodzajUbrania
+
+
+class RodzajUbraniaListView(generic.ListView):
+    model = RodzajUbrania
+    template_name = "ubrania/rodzaje.html"

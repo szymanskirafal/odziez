@@ -7,7 +7,7 @@ from .models import RodzajUbrania, Ubranie
 class RodzajUbraniaAdmin(admin.ModelAdmin):
     pass
 
-
+    
 @admin.register(Ubranie)
 class UbranieAdmin(admin.ModelAdmin):
     pass

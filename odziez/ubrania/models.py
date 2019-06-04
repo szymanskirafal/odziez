@@ -1,11 +1,12 @@
 from django.db import models
 
-from pracownicy.models import Pracownik
+from pracownicy.models import Pracownik, Stanowisko
 
 class RodzajUbrania(models.Model):
     nazwa = models.CharField(max_length = 150, unique = True)
     opis = models.CharField(max_length = 300, blank = True)
     czasokres_wymiany = models.PositiveSmallIntegerField()
+    przysluguje = models.ManyToManyField(Stanowisko)
 
     class Meta:
         verbose_name_plural = 'Rodzaje ubrań'
@@ -14,7 +15,10 @@ class RodzajUbrania(models.Model):
         return self.nazwa + ' ' + 'wymiana co ' + str(self.czasokres_wymiany)
 
 class Ubranie(models.Model):
-    ubranie = models.ForeignKey(RodzajUbrania, on_delete = models.PROTECT)
+    ubranie = models.ForeignKey(
+        RodzajUbrania,
+        on_delete = models.CASCADE,
+        related_name = 'wybrane',)
     pracownik = models.OneToOneField(
         Pracownik,
         on_delete = models.CASCADE,

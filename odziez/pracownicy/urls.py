@@ -1,0 +1,13 @@
+from django.urls import path
+
+from . import views
+
+app_name = "pracownicy"
+urlpatterns = [
+    path(
+        "",
+        view=views.PracownicyListView.as_view(),
+        name="pracownicy",
+    ),
+
+]
