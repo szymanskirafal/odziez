@@ -12,14 +12,14 @@ class RodzajUbrania(models.Model):
         verbose_name_plural = 'Rodzaje ubrań'
 
     def __str__(self):
-        return self.nazwa + ' ' + 'wymiana co ' + str(self.czasokres_wymiany)
+        return self.nazwa + ' ' + 'wymiana co ' + str(self.czasokres_wymiany) + 'przysluguje '+ str(self.przysluguje)
 
 class Ubranie(models.Model):
     ubranie = models.ForeignKey(
         RodzajUbrania,
         on_delete = models.CASCADE,
         related_name = 'wybrane',)
-    pracownik = models.OneToOneField(
+    pracownik = models.ForeignKey(
         Pracownik,
         on_delete = models.CASCADE,
         related_name = 'ubrania',

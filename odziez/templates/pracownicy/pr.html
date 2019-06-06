@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h1>Pracownicy</h1>
+
+<p>diff</p>
+{% for d in diff %}
+  <p>d {{ d }}</p>
+{% endfor %}
+
+{% for pracownik in pracownicy %}
+  <h3>{{ pracownik.imie }} {{ pracownik.nazwisko }} - {{ pracownik.etat.stanowisko }}</h3>
+  <p>ubrania zamówione:</p>
+
+  {% for ubranie in pracownik.ubrania.all %}
+    <p>{{ ubranie.ubranie.nazwa }} ... data zamówienia {{ ubranie.zamowione|date:"d - m - Y"}}</p>
+
+  {% endfor %}
+
+  <h4>Nowe ubrania możliwe do zamówienia</h4>
+  {% for ubranie in ubrania_przyslugujace %}
+    <p>ubranie przyslugujace {{ ubranie }}, {{ ubranie.przysluguje.all }}</p>
+    {% if pracownik.etat.stanowisko in ubranie.przysluguje.all %}
+      <p>bbbbbbbb {{ ubranie }}</p>
+    {% endif %}
+
+
+  {% endfor %}
+
+
+  <br><br>
+
+
+{% endfor %}
+
+<hr>
+<h2>Miejsce Pracy</h2>
+<p>{{ miejsce_pracy }}</p>
+{% endblock content %}

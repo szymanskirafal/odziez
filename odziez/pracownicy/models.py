@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from odziez.users.models import User
 
@@ -113,6 +114,9 @@ class Pracownik(Osoba):
 
     def __str__(self):
         return self.imie + ' ' + self.nazwisko  + ' ' + str(self.etat)
+
+    def get_absolut_url(self):
+        return reverse('pracownicy:pracownik', args=[str(self.id)])
 
 
 class Kierownik(Pracownik):

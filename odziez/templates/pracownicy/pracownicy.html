@@ -4,10 +4,18 @@
 
 
 <h1>Pracownicy</h1>
-{% for pracownik in pracownicy %}
-<p>{{ pracownik.imie }} {{ pracownik.nazwisko }} - {{ pracownik.etat.stanowisko }}</p>
-{% endfor %}
-<hr>
 <h2>Miejsce Pracy</h2>
 <p>{{ miejsce_pracy }}</p>
+
+{% for pracownik in pracownicy %}
+
+  <a href="{{ pracownik.get_absolut_url }}">
+    {{ pracownik.imie }}
+    {{ pracownik.nazwisko }}
+    - {{ pracownik.etat.stanowisko }}
+  </a>
+  <br>
+
+{% endfor %}
+
 {% endblock content %}

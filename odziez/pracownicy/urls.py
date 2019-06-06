@@ -9,5 +9,10 @@ urlpatterns = [
         view=views.PracownicyListView.as_view(),
         name="pracownicy",
     ),
+    path(
+        "<int:pk>",
+        view=views.PracownikDetailView.as_view(),
+        name="pracownik",
+    ),
 
 ]
