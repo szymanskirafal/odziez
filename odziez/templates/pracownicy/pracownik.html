@@ -12,7 +12,7 @@
 <p>Odzież</p>
 
 {% for ubranie in pracownik.ubrania.all %}
-<h2>{{ ubranie.ubranie.nazwa }}</h2>
+<h2>{{ ubranie.rodzaj.nazwa }}</h2>
 <p>zamówione {{ ubranie.zamowione|date:"d - m - Y" }}</p>
 {% endfor %}
 

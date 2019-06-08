@@ -15,7 +15,7 @@ class RodzajUbrania(models.Model):
         return self.nazwa + ' ' + 'wymiana co ' + str(self.czasokres_wymiany) + 'przysluguje '+ str(self.przysluguje)
 
 class Ubranie(models.Model):
-    ubranie = models.ForeignKey(
+    rodzaj = models.ForeignKey(
         RodzajUbrania,
         on_delete = models.CASCADE,
         related_name = 'wybrane',)
