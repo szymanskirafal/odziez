@@ -7,5 +7,13 @@
 
 <p>{{ pracownik.imie }} {{ pracownik.nazwisko }}</p>
 <p>{{ pracownik.etat.stanowisko }}</p>
+<p>{{ pracownik.etat.miejsce_pracy }}</p>
+
+<p>Odzież</p>
+
+{% for ubranie in pracownik.ubrania.all %}
+<h2>{{ ubranie.ubranie.nazwa }}</h2>
+<p>zamówione {{ ubranie.zamowione|date:"d - m - Y" }}</p>
+{% endfor %}
 
 {% endblock content %}

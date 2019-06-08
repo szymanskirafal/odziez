@@ -9,6 +9,9 @@ class PracownikDetailView(generic.DetailView):
     model = Pracownik
     template_name = 'pracownicy/pracownik.html'
 
+    
+
+
 
 class PracownicyListView(generic.ListView):
     context_object_name = 'pracownicy'
