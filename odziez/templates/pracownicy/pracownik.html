@@ -9,11 +9,22 @@
 <p>{{ pracownik.etat.stanowisko }}</p>
 <p>{{ pracownik.etat.miejsce_pracy }}</p>
 
-<p>Odzież</p>
+<h3>Ubrania</h3>
+<hr>
 
-{% for ubranie in pracownik.ubrania.all %}
-<h2>{{ ubranie.rodzaj.nazwa }}</h2>
-<p>zamówione {{ ubranie.zamowione|date:"d - m - Y" }}</p>
+{% for rodzaj in rodzaje_ubran.all %}
+
+  <h4>{{ rodzaj.nazwa }}</h4>
+
+  {% for ubranie in pracownik.ubrania.all %}
+
+    {% if ubranie.rodzaj ==  rodzaj %}
+      <p>zamówione {{ ubranie.zamowione|date:"d - m - Y" }}<p>
+
+    {% endif %}
+
+  {% endfor %}
+
 {% endfor %}
 
 {% endblock content %}

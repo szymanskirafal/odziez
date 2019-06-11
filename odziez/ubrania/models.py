@@ -33,4 +33,4 @@ class Ubranie(models.Model):
         verbose_name_plural = 'Ubrania pracowników'
 
     def __str__(self):
-        return str(self.ubranie) + ' ' + str(self.pracownik)
+        return str(self.rodzaj) + ' ' + str(self.pracownik)

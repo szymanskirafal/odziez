@@ -9,8 +9,15 @@ class PracownikDetailView(generic.DetailView):
     model = Pracownik
     template_name = 'pracownicy/pracownik.html'
 
-    
+    def get_queryset(self, **kwargs):
+        queryset = super().get_queryset(**kwargs)
+        queryset = queryset.prefetch_related('ubrania')
+        return queryset
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['rodzaje_ubran'] = RodzajUbrania.objects.all()
+        return context
 
 
 class PracownicyListView(generic.ListView):
@@ -47,7 +54,7 @@ class PracownicyListView(generic.ListView):
         zbior_nazw_ubran_zamawianych = set()
         wszystkie_ubrania_zamowione = Ubranie.objects.all()
         for ubranie in wszystkie_ubrania_zamowione:
-            zbior_nazw_ubran_zamawianych.add(ubranie.ubranie.nazwa)
+            zbior_nazw_ubran_zamawianych.add(ubranie.rodzaj.nazwa)
         print('------------')
         print(' wszystkie rodzaje ', zbior_nazw_wszystkich_rodzajow_ubran)
         print('------------')
