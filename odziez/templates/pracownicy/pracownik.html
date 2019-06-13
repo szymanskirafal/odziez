@@ -9,21 +9,30 @@
 <p>{{ pracownik.etat.stanowisko }}</p>
 <p>{{ pracownik.etat.miejsce_pracy }}</p>
 
-<h3>Ubrania</h3>
-<hr>
+<h3>Nowe ubrania</h3>
+{% for ubranie in nowe_ubrania %}
+  <p>nowe ubranie {{ ubranie.rodzaj }}</p>
+{% endfor %}
+
+
+
+<h3>Ubrania zamówione.</h3>
 
 {% for rodzaj in rodzaje_ubran.all %}
 
-  <h4>{{ rodzaj.nazwa }}</h4>
+  <div class="jumbotron">
 
-  {% for ubranie in pracownik.ubrania.all %}
+    <h4>{{ rodzaj.nazwa }}</h4>
 
-    {% if ubranie.rodzaj ==  rodzaj %}
-      <p>zamówione {{ ubranie.zamowione|date:"d - m - Y" }}<p>
+    {% for ubranie in pracownik.ubrania.all %}
 
-    {% endif %}
+      {% if ubranie.rodzaj ==  rodzaj %}
+        <p>zamówione {{ ubranie.zamowione|date:"d - m - Y" }}<p>
+      {% endif %}
 
-  {% endfor %}
+    {% endfor %}
+
+  </div>
 
 {% endfor %}
 

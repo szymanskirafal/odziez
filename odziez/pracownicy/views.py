@@ -17,7 +17,27 @@ class PracownikDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['rodzaje_ubran'] = RodzajUbrania.objects.all()
+        nowe_ubrania = RodzajUbrania.objects.all().exclude(pracownik=self.obj)
+        context['nowe_ubrania'] = nowe_ubrania
         return context
+
+    def get_stanowisko_pracownika(self):
+        pracownik = self.get_object()
+        stanowisko = pracownik.etat.stanowisko
+        return stanowisko
+
+    def get_rodzaje_ubran_niezamawianych_a_dostepnych(self):
+        rodzaje_ubran_przyslugujacych = RodzajUbrania.objects.all().filter(przysluguje = self.get_stanowisko_pracownika)
+        zbior_nazw_ubran_zamawianych = set()
+        ubrania = Ubranie.objects.all()
+        ubrania_pracownika = ubrania.filter(pracownik = self.get_object())
+        for ubranie in ubrania_pracownika:
+            zbior_nazw_ubran_zamawianych.add(ubranie.rodzaj.nazwa)
+        print('------------')
+        print(' zamawiane ', zbior_nazw_ubran_zamawianych)
+        diff = zbior_nazw_wszystkich_rodzajow_ubran.difference(zbior_nazw_ubran_zamawianych)
+        print('------------')
+        print(' diff ', diff)
 
 
 class PracownicyListView(generic.ListView):
