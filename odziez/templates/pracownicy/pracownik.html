@@ -10,9 +10,13 @@
 <p>{{ pracownik.etat.miejsce_pracy }}</p>
 
 <h3>Nowe ubrania</h3>
-{% for ubranie in nowe_ubrania %}
-  <p>nowe ubranie {{ ubranie.rodzaj }}</p>
-{% endfor %}
+{% if nowe_ubrania %}
+  {% for ubranie in nowe_ubrania %}
+    <p>{{ ubranie.nazwa }}</p>
+  {% endfor %}
+{% else %}
+  <p>Brak nowych ubrań.</p>
+{% endif %}
 
 
 

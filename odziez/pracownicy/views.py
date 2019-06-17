@@ -17,8 +17,7 @@ class PracownikDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['rodzaje_ubran'] = RodzajUbrania.objects.all()
-        nowe_ubrania = RodzajUbrania.objects.all().exclude(pracownik=self.obj)
-        context['nowe_ubrania'] = nowe_ubrania
+        context['nowe_ubrania'] = self.get_rodzaje_ubran_niezamawianych_a_przyslugujacych()
         return context
 
     def get_stanowisko_pracownika(self):
@@ -26,18 +25,26 @@ class PracownikDetailView(generic.DetailView):
         stanowisko = pracownik.etat.stanowisko
         return stanowisko
 
-    def get_rodzaje_ubran_niezamawianych_a_dostepnych(self):
-        rodzaje_ubran_przyslugujacych = RodzajUbrania.objects.all().filter(przysluguje = self.get_stanowisko_pracownika)
-        zbior_nazw_ubran_zamawianych = set()
-        ubrania = Ubranie.objects.all()
-        ubrania_pracownika = ubrania.filter(pracownik = self.get_object())
-        for ubranie in ubrania_pracownika:
-            zbior_nazw_ubran_zamawianych.add(ubranie.rodzaj.nazwa)
-        print('------------')
-        print(' zamawiane ', zbior_nazw_ubran_zamawianych)
-        diff = zbior_nazw_wszystkich_rodzajow_ubran.difference(zbior_nazw_ubran_zamawianych)
-        print('------------')
-        print(' diff ', diff)
+    def get_rodzaje_ubran_zamawianych(self):
+        ubrania_zamowione = Ubranie.objects.all().filter(pracownik = self.get_object())
+        nazwy = []
+        for ubranie in ubrania_zamowione:
+            nazwy.append(ubranie.rodzaj.nazwa)
+        return nazwy
+
+    def get_rodzaje_ubran_przyslugujacych(self):
+        rodzaje_ubran = RodzajUbrania.objects.all()
+        przyslugujace_pracownikowi = rodzaje_ubran.filter(
+            przysluguje = self.get_stanowisko_pracownika()
+            )
+        return przyslugujace_pracownikowi
+
+    def get_rodzaje_ubran_niezamawianych_a_przyslugujacych(self):
+        przyslugujace = self.get_rodzaje_ubran_przyslugujacych()
+        niezamawiane_a_przyslugujace = przyslugujace.exclude(
+            nazwa__in = self.get_rodzaje_ubran_zamawianych()
+            )
+        return niezamawiane_a_przyslugujace
 
 
 class PracownicyListView(generic.ListView):
@@ -56,29 +63,10 @@ class PracownicyListView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['miejsce_pracy'] = self.get_miejsce_pracy()
-        context['ubrania_przyslugujace'] = RodzajUbrania.objects.all()
         return context
 
     def get_queryset(self, **kwargs):
         queryset = super().get_queryset(**kwargs)
         queryset = queryset.filter(etat__miejsce_pracy = self.get_miejsce_pracy())
         queryset = queryset.prefetch_related('ubrania')
-        self.get_rodzaje_ubran_niezamawianych_a_dostepnych()
         return queryset
-
-    def get_rodzaje_ubran_niezamawianych_a_dostepnych(self):
-        wszytskie_rodzaje_ubran = RodzajUbrania.objects.all()
-        zbior_nazw_wszystkich_rodzajow_ubran = set()
-        for rodzaj in wszytskie_rodzaje_ubran:
-            zbior_nazw_wszystkich_rodzajow_ubran.add(rodzaj.nazwa)
-        zbior_nazw_ubran_zamawianych = set()
-        wszystkie_ubrania_zamowione = Ubranie.objects.all()
-        for ubranie in wszystkie_ubrania_zamowione:
-            zbior_nazw_ubran_zamawianych.add(ubranie.rodzaj.nazwa)
-        print('------------')
-        print(' wszystkie rodzaje ', zbior_nazw_wszystkich_rodzajow_ubran)
-        print('------------')
-        print(' zamawiane ', zbior_nazw_ubran_zamawianych)
-        diff = zbior_nazw_wszystkich_rodzajow_ubran.difference(zbior_nazw_ubran_zamawianych)
-        print('------------')
-        print(' diff ', diff)
