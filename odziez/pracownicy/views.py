@@ -4,6 +4,7 @@ from ubrania.models import RodzajUbrania, Ubranie
 
 from .models import Pracownik
 
+
 class PracownikDetailView(generic.DetailView):
     context_object_name = 'pracownik'
     model = Pracownik
@@ -16,8 +17,8 @@ class PracownikDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['rodzaje_ubran'] = RodzajUbrania.objects.all()
-        context['nowe_ubrania'] = self.get_rodzaje_ubran_niezamawianych_a_przyslugujacych()
+        context['nazwy_ubran_zamawianych'] = self.get_nazwy_rodzajow_ubran_zamawianych
+        context['rodzaje_ubran_przyslugujacych'] = self.get_rodzaje_ubran_przyslugujacych()
         return context
 
     def get_stanowisko_pracownika(self):
@@ -25,26 +26,28 @@ class PracownikDetailView(generic.DetailView):
         stanowisko = pracownik.etat.stanowisko
         return stanowisko
 
-    def get_rodzaje_ubran_zamawianych(self):
-        ubrania_zamowione = Ubranie.objects.all().filter(pracownik = self.get_object())
-        nazwy = []
+    def get_ubrania_zamowione(self):
+        ubrania = Ubranie.objects.all()
+        ubrania_zamowione = ubrania.filter(pracownik = self.get_object())
+        return ubrania_zamowione
+
+    def get_nazwy_rodzajow_ubran_zamawianych(self):
+        nazwy_rodzajow_ubran_zamawianych = []
+        ubrania_zamowione = self.get_ubrania_zamowione()
         for ubranie in ubrania_zamowione:
-            nazwy.append(ubranie.rodzaj.nazwa)
-        return nazwy
+            nazwy_rodzajow_ubran_zamawianych.append(ubranie.rodzaj.nazwa)
+        return nazwy_rodzajow_ubran_zamawianych
+
+    def get_rodzaje_ubran(self):
+        rodzaje_ubran = RodzajUbrania.objects.all()
+        return rodzaje_ubran
 
     def get_rodzaje_ubran_przyslugujacych(self):
-        rodzaje_ubran = RodzajUbrania.objects.all()
-        przyslugujace_pracownikowi = rodzaje_ubran.filter(
+        rodzaje_ubran = self.get_rodzaje_ubran()
+        rodzaje_ubran_przyslugujacych = rodzaje_ubran.filter(
             przysluguje = self.get_stanowisko_pracownika()
             )
-        return przyslugujace_pracownikowi
-
-    def get_rodzaje_ubran_niezamawianych_a_przyslugujacych(self):
-        przyslugujace = self.get_rodzaje_ubran_przyslugujacych()
-        niezamawiane_a_przyslugujace = przyslugujace.exclude(
-            nazwa__in = self.get_rodzaje_ubran_zamawianych()
-            )
-        return niezamawiane_a_przyslugujace
+        return rodzaje_ubran_przyslugujacych
 
 
 class PracownicyListView(generic.ListView):
@@ -67,6 +70,8 @@ class PracownicyListView(generic.ListView):
 
     def get_queryset(self, **kwargs):
         queryset = super().get_queryset(**kwargs)
-        queryset = queryset.filter(etat__miejsce_pracy = self.get_miejsce_pracy())
+        queryset = queryset.filter(
+            etat__miejsce_pracy = self.get_miejsce_pracy()
+            )
         queryset = queryset.prefetch_related('ubrania')
         return queryset

@@ -9,32 +9,29 @@
 <p>{{ pracownik.etat.stanowisko }}</p>
 <p>{{ pracownik.etat.miejsce_pracy }}</p>
 
-<h3>Nowe ubrania</h3>
-{% if nowe_ubrania %}
-  {% for ubranie in nowe_ubrania %}
-    <p>{{ ubranie.nazwa }}</p>
-  {% endfor %}
-{% else %}
-  <p>Brak nowych ubrań.</p>
-{% endif %}
 
-
-
-<h3>Ubrania zamówione.</h3>
-
-{% for rodzaj in rodzaje_ubran.all %}
+{% for rodzaj in rodzaje_ubran_przyslugujacych.all %}
 
   <div class="jumbotron">
 
     <h4>{{ rodzaj.nazwa }}</h4>
 
-    {% for ubranie in pracownik.ubrania.all %}
+    {% if rodzaj.nazwa in nazwy_ubran_zamawianych %}
 
-      {% if ubranie.rodzaj ==  rodzaj %}
-        <p>zamówione {{ ubranie.zamowione|date:"d - m - Y" }}<p>
-      {% endif %}
+      {% for ubranie in pracownik.ubrania.all %}
 
-    {% endfor %}
+        {% if ubranie.rodzaj ==  rodzaj %}
+          <p>zamówione {{ ubranie.zamowione|date:"d - m - Y" }}<p>
+        {% endif %}
+
+      {% endfor %}
+
+    {% else %}
+      <p>nie zamawiane nigdy</p>
+      <a class="btn btn-primary" href="#" role="button">Zamów</a>
+    {% endif %}
+
+
 
   </div>
 
