@@ -1,5 +1,9 @@
 from django.db import models
 
+from django.utils.timezone import localdate
+
+import datetime
+
 from pracownicy.models import Pracownik, Stanowisko
 
 class RodzajUbrania(models.Model):
@@ -30,7 +34,26 @@ class Ubranie(models.Model):
     zniszczone = models.DateField(null = True, blank = True)
 
     class Meta:
+        ordering = ['-zamowione']
         verbose_name_plural = 'Ubrania pracowników'
 
     def __str__(self):
         return str(self.rodzaj) + ' ' + str(self.pracownik)
+
+
+    def can_be_ordered_again(self):
+        today = localdate()
+        ordered = self.zamowione
+        days = self.rodzaj.czasokres_wymiany * 30
+        time_to_order_again = datetime.timedelta(days = days)
+        if  ordered + time_to_order_again < today:
+            return True
+        else:
+            return False
+
+    def time_to_order_again(self):
+        ordered = self.zamowione
+        days = self.rodzaj.czasokres_wymiany * 30
+        time_to_order_again = datetime.timedelta(days = days)
+        date_to_order_again = ordered + time_to_order_again
+        return date_to_order_again

@@ -2,13 +2,11 @@
 
 {% block content %}
 
-
 <h1>Pracownik</h1>
 
 <p>{{ pracownik.imie }} {{ pracownik.nazwisko }}</p>
 <p>{{ pracownik.etat.stanowisko }}</p>
 <p>{{ pracownik.etat.miejsce_pracy }}</p>
-
 
 {% for rodzaj in rodzaje_ubran_przyslugujacych.all %}
 
@@ -21,17 +19,25 @@
       {% for ubranie in pracownik.ubrania.all %}
 
         {% if ubranie.rodzaj ==  rodzaj %}
+          {% for f in first_clothes %}
+            {% if f == ubranie %}
+              {% if f.can_be_ordered_again %}
+                <a class="btn btn-success" href="{% url 'ubrania:rodzaj' rodzaj.pk pracownik.pk %}" role="button">Zamów</a>
+              {% else %}
+                <p>Zamówić można {{ f.time_to_order_again|date:"d - m - Y" }}</p>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+
           <p>zamówione {{ ubranie.zamowione|date:"d - m - Y" }}<p>
         {% endif %}
 
       {% endfor %}
 
     {% else %}
-      <p>nie zamawiane nigdy</p>
-      <a class="btn btn-primary" href="#" role="button">Zamów</a>
+      <p>Niezamawiane nigdy</p>
+      <a class="btn btn-primary" href="{% url 'ubrania:rodzaj' rodzaj.pk pracownik.pk %}" role="button">Zamów</a>
     {% endif %}
-
-
 
   </div>
 

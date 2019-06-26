@@ -19,12 +19,23 @@ class PracownikDetailView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         context['nazwy_ubran_zamawianych'] = self.get_nazwy_rodzajow_ubran_zamawianych
         context['rodzaje_ubran_przyslugujacych'] = self.get_rodzaje_ubran_przyslugujacych()
+        context['first_clothes'] = self.get_first_clothes()
         return context
 
     def get_stanowisko_pracownika(self):
         pracownik = self.get_object()
         stanowisko = pracownik.etat.stanowisko
         return stanowisko
+
+    def get_first_clothes(self):
+        clothes = self.get_ubrania_zamowione()
+        kinds = self.get_rodzaje_ubran_przyslugujacych()
+        first_clothes = []
+        for kind in kinds:
+            clothes_filtered = clothes.filter(rodzaj = kind)
+            first = clothes_filtered.first()
+            first_clothes.append(first)
+        return first_clothes
 
     def get_ubrania_zamowione(self):
         ubrania = Ubranie.objects.all()

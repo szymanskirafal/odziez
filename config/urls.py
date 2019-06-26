@@ -16,6 +16,7 @@ urlpatterns = [
     path("users/", include("odziez.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
+    path("cart/", include("cart.urls", namespace="cart")),
     path("pracownicy/", include("pracownicy.urls", namespace="pracownicy")),
     path("ubrania/", include("ubrania.urls", namespace="ubrania")),
 

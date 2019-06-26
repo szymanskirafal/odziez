@@ -32,7 +32,7 @@ class Cart(object):
         if rodzaj_ubrania_id not in self.cart:
             self.cart[rodzaj_ubrania_id]['quantity'] = quantity
         else:
-            self.cart[rodzaj_ubrania_id['quantity'] += quantity
+            self.cart[rodzaj_ubrania_id]['quantity'] += quantity
         self.save()
 
     def clear(self):
