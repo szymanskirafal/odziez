@@ -10,8 +10,8 @@
 <p> formularz </p>
 <p> zamów button </p>
 
-<form action="{% url 'cart:add' %}" method="post">
-  {{ form }}
+<form action="{% url 'cart:add' pracownik.pk rodzaj.pk %}" method="post">
+  {{ form.as_p }}
   {% csrf_token %}
   <input type="submit" value="Dodaj do zamówienia">
 </form>

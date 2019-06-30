@@ -5,7 +5,7 @@ from . import views
 app_name = "cart"
 urlpatterns = [
     path(
-        "add/",
+        "add/<int:pracownik_pk>/<int:rodzaj_pk>/",
         view=views.CartAddFormView.as_view(),
         name="add",
     ),

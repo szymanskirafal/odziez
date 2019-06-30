@@ -3,20 +3,26 @@ from django.views import generic
 from django.views.decorators.http import require_POST
 from django.urls import reverse_lazy
 
+from pracownicy.models import Pracownik
 from ubrania.models import RodzajUbrania, Ubranie
 
-
-#from .cart import Cart
+from cart.models import Cart
 from .forms import CartAddUbranieForm
 """
-@require_POST
+
 def cart_add(request, rodzaj_ubrania_id, pracownik_id):
     cart = Cart(request)
     rodzaj_ubrania = get_object_or_404(RodzajUbrania, id = rodzaj_ubrania_id)
     pracownik = get_object_or_404(Pracownik, id = pracownik_id)
     form = CartAddUbranieFrom(request.POST)
     if form.is_valid():
-        cart.add(rodzaj_ubrania, pracownik)
+        cd = form.cleaned_data
+        cart.add(
+            rodzaj_ubrania,
+            pracownik,
+            quantity = cd['quantity',
+            update_quantity = cd['update_quantity'],
+            )
     return redirect('/')
 
 
@@ -32,5 +38,19 @@ class CartAddFormView(generic.FormView):
         print('  ---------   def form_vallid called  ')
         if form.is_valid():
             print('  --------  form is valid  ')
+            cart = Cart(self.request)
+            rodzaj_ubrania = get_object_or_404(RodzajUbrania, id = self.kwargs.get('rodzaj_pk'))
+            pracownik = get_object_or_404(Pracownik, id = self.kwargs.get('pracownik_pk'))
+            cd = form.cleaned_data
+            print('  -----  got cleaned_data    ')
+            cart.add(
+                pracownik_id = pracownik.id,
+                rodzaj_ubrania_id = rodzaj_ubrania.id,
+                quantity = cd['quantity'],
+                #update_quantity = cd['update_quantity'],
+                )
+            print('  ------ cart.add called   ')
         else:
             print(' ---------    WTF  ')
+
+        return redirect('/')
