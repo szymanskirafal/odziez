@@ -8,26 +8,7 @@ from ubrania.models import RodzajUbrania, Ubranie
 
 from cart.models import Cart
 from .forms import CartAddUbranieForm
-"""
 
-def cart_add(request, rodzaj_ubrania_id, pracownik_id):
-    cart = Cart(request)
-    rodzaj_ubrania = get_object_or_404(RodzajUbrania, id = rodzaj_ubrania_id)
-    pracownik = get_object_or_404(Pracownik, id = pracownik_id)
-    form = CartAddUbranieFrom(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        cart.add(
-            rodzaj_ubrania,
-            pracownik,
-            quantity = cd['quantity',
-            update_quantity = cd['update_quantity'],
-            )
-    return redirect('/')
-
-
-# Create your views here.
-"""
 
 class CartAddFormView(generic.FormView):
     form_class = CartAddUbranieForm
@@ -53,4 +34,9 @@ class CartAddFormView(generic.FormView):
         else:
             print(' ---------    WTF  ')
 
-        return redirect('/')
+        return redirect('pracownicy:pracownicy')
+
+
+def cart_detail(request):
+    cart = Cart(request)
+    return render(request, 'cart/detail.html', {'cart':cart})
