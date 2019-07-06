@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Pracownik</h1>
+
+<p>{{ employee.name }} {{ employee.surname }}</p>
+<p>{{ employee.job.position }}</p>
+<p>{{ employee.job.work_place }}</p>
+
+{% for kind in kinds_of_available_clothes.all %}
+
+  <div class="jumbotron">
+
+    <h4>{{ kind.name }}</h4>
+
+    {% if kind.name in names_of_kinds_of_clothes_ordered %}
+
+      {% for clothe in employee.clothes.all %}
+
+        {% if clothe.kind ==  kind %}
+          {% for f in first_clothes %}
+            {% if f == clothe %}
+              {% if f.can_be_ordered_again %}
+                <a class="btn btn-success" href="{% url 'clothes:kind' employee.pk kind.pk %}" role="button">Zamów</a>
+              {% else %}
+                <p>Zamówić można {{ f.time_to_order_again|date:"d - m - Y" }}</p>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+
+          <p>zamówione {{ clothe.ordered|date:"d - m - Y" }}<p>
+        {% endif %}
+
+      {% endfor %}
+
+    {% else %}
+      <p>Niezamawiane nigdy</p>
+      <a class="btn btn-primary" href="{% url 'clothes:kind' kind.pk employee.pk %}" role="button">Zamów</a>
+    {% endif %}
+
+  </div>
+
+{% endfor %}
+
+{% endblock content %}
