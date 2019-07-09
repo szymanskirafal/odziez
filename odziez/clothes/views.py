@@ -12,7 +12,7 @@ class KindsOfClothesListView(generic.ListView):
 class KindOfClotheDetailView(generic.edit.FormMixin, generic.DetailView):
     context_object_name = 'kind'
     model = KindOfClothe
-    template_name = "uclothes/kind.html"
+    template_name = "clothes/kind.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -39,7 +39,7 @@ class EmployeeDetailView(generic.DetailView):
 
     def get_clothes_ordered(self):
         clothes = Clothe.objects.all()
-        clothes_ordered = uclothe.filter(employee = self.get_object())
+        clothes_ordered = clothes.filter(employee = self.get_object())
         return clothes_ordered
 
     def get_names_of_kinds_of_clothes_ordered(self):

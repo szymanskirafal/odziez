@@ -22,7 +22,7 @@
           {% for f in first_clothes %}
             {% if f == clothe %}
               {% if f.can_be_ordered_again %}
-                <a class="btn btn-success" href="{% url 'clothes:kind' employee.pk kind.pk %}" role="button">Zamów</a>
+                <a class="btn btn-success" href="{% url 'orders:redirect' kind.pk employee.pk %}" role="button">Zamów</a>
               {% else %}
                 <p>Zamówić można {{ f.time_to_order_again|date:"d - m - Y" }}</p>
               {% endif %}
@@ -36,7 +36,7 @@
 
     {% else %}
       <p>Niezamawiane nigdy</p>
-      <a class="btn btn-primary" href="{% url 'clothes:kind' kind.pk employee.pk %}" role="button">Zamów</a>
+      <a class="btn btn-primary" href="{% url 'orders:redirect' kind.pk employee.pk %}" role="button">Zamów</a>
     {% endif %}
 
   </div>

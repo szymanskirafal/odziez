@@ -116,7 +116,11 @@ class Employee(Person):
         return reverse('employees:employee', args=[str(self.id)])
 
 
-class Manager(Employee):
+class Manager(Person):
+    job = models.ForeignKey(
+        Job,
+        on_delete = models.CASCADE,
+        )
     user = models.OneToOneField(User, on_delete = models.CASCADE)
     email = models.EmailField()
 

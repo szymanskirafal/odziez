@@ -16,8 +16,9 @@ urlpatterns = [
     path("users/", include("odziez.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
-    path("employees/", include("employees.urls", namespace="employees")),
     path("clothes/", include("clothes.urls", namespace="clothes")),
+    path("employees/", include("employees.urls", namespace="employees")),
+    path("orders/", include("orders.urls", namespace="orders")),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
