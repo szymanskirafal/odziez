@@ -6,6 +6,8 @@
 <h1>Redirect</h1>
 <p>kind {{ kind.name }}</p>
 <p>employee {{ employee.name }}</p>
+<p>order {{ order.pk }}</p>
+<a class="btn btn-primary" href="{% url 'clothes:clothe-create' kind_pk=kind.pk order_pk=order.pk employee_pk=employee.pk %}" role="button">Zamów</a>
 
 
 {% endblock content %}

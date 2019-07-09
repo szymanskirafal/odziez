@@ -9,10 +9,20 @@ class OrderTemplateView(generic.TemplateView):
     template_name = "orders/redirect.html"
 
     def get_order_pk(self):
-        
+        print('  -------------- ')
         print('  calling get_order_pk ')
+        print('  request user ', self.request.user)
+        print('  request user class', self.request.user.__class__)
+        for m in dir(self.request.user):
+            print(m)
+        print('  -------------- ')
+        print('  has attr', hasattr(self.request.user, 'manager'))
+        print('  manager', self.request.user.manager)
+        print('  work_place', self.request.user.manager.job.work_place)
+        manager = self.request.user.manager
         order, created = Order.objects.get_or_create(
-            manager = self.request.user,
+            manager = manager,
+            place_of_delivery = manager.job.work_place,
             during_composing = True,)
         print('  created or not: ', created)
         print('  order.pk : ', order.pk)
