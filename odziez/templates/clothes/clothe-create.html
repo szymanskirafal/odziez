@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h1>Clothe Create</h1>
+
+<p> formularz </p>
+
+<form action="#" method="post">
+  {{ form.as_p }}
+  {% csrf_token %}
+  <input type="submit" value="Dodaj do zamówienia">
+</form>
+<hr>
+
+<a class="btn btn-danger" href="#" role="button">Zrezygnuj</a>
+
+{% endblock content %}

@@ -30,7 +30,7 @@ class Clothe(models.Model):
         on_delete = models.CASCADE,
         related_name = 'clothes',
         )
-    ordered = models.DateField(null = False, blank = True)
+    ordered = models.DateField(null = True, blank = True)
     received = models.DateField(null = True, blank = True)
     owned = models.DateField(null = True, blank = True)
     destroyed = models.DateField(null = True, blank = True)
@@ -46,7 +46,7 @@ class Clothe(models.Model):
     def can_be_ordered_again(self):
         today = localdate()
         ordered = self.ordered
-        days = self.rodzaj.time_to_exchange * 30
+        days = self.kind.time_to_exchange * 30
         time_to_order_again = datetime.timedelta(days = days)
         if  ordered + time_to_order_again < today:
             return True

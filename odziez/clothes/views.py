@@ -1,8 +1,10 @@
+from django.urls import reverse
 from django.views import generic
 
 from employees.models import Employee
 from orders.models import Order
 
+from .forms import ClotheCreateForm
 from .models import Clothe, KindOfClothe
 
 
@@ -11,7 +13,18 @@ class KindsOfClothesListView(generic.ListView):
     template_name = "clothes/kinds.html"
 
 class ClotheCreateView(generic.CreateView):
+    form_class = ClotheCreateForm
     model = Clothe
+    success_url = '/'
+    template_name = "clothes/clothe-create.html"
+
+    def form_valid(self, form):
+        print('   --- form valid called ')
+        print('   --- kind_pk: ', self.kwargs['kind_pk'])
+        form.instance.kind = KindOfClothe.objects.get(pk = self.kwargs['kind_pk'])
+        form.instance.order = Order.objects.get(pk = self.kwargs['order_pk'])
+        form.instance.employee = Employee.objects.get(pk = self.kwargs['employee_pk'])
+        return super().form_valid(form)
 
 
 #    def get_context_data(self, **kwargs):
