@@ -24,6 +24,7 @@ class ClotheCreateView(generic.CreateView):
         form.instance.kind = KindOfClothe.objects.get(pk = self.kwargs['kind_pk'])
         form.instance.order = Order.objects.get(pk = self.kwargs['order_pk'])
         form.instance.employee = Employee.objects.get(pk = self.kwargs['employee_pk'])
+        form.instance.prepared_to_order = True
         return super().form_valid(form)
 
 
