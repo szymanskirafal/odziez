@@ -24,32 +24,37 @@ class EmployeeNewDetailView(generic.DetailView):
     def get_available(self):
         return KindOfClothe.objects.all().filter(available_for = self.get_position())
 
+    def get_clothes_of_employee(self):
+        return Clothe.objects.all().filter(employee = self.object)
+
+    def get_ordered(self):
+        clothes = self.get_clothes_of_employee()
+        return clothes.filter(ordered__lte = localdate())
+
+    def get_prepared_to_order(self):
+        clothes = self.get_clothes_of_employee()
+        return clothes.filter(prepared_to_order = True)
+
     def get_ordered_or_prepared_to_order(self):
-        clothes = Clothe.objects.all()
-        clothes = clothes.filter(employee = self.object)
-        ordered_or_prepared_to_order = clothes.filter(Q(ordered__lte = localdate()) | Q(prepared_to_order = True))
-        return ordered_or_prepared_to_order
+        return self.get_ordered() & self.get_prepared_to_order()
 
     def get_names_of_available(self):
         return set([kind.name for kind in self.get_available()])
 
     def get_names_of_ordered_or_prepared_to_order(self):
-        return set([clothe.kind.name for clothe in self.get_ordered_or_prepared_to_order()])
+        return set(clothe.kind.name for clothe in self.get_ordered_or_prepared_to_order())
 
-    # def get_never_ordered_but_available(self):
-    #    never_ordered_but_available = [
-    #        name
-    #        for name in self.get_names_of_available()
-    #        if name not in self.get_names_of_ordered_or_prepared_to_order()
-    #        ]
+    def get_names_of_never_ordered_but_available(self):
+        return [
+            name
+            for name in self.get_names_of_available()
+            if name not in self.get_names_of_ordered_or_prepared_to_order()
+            ]
 
-    #    never_ordered_but_available = KindOfClothe.objects.all().filter(
-    #        name__in = never_ordered_but_available
-    #        )
-
-    #    return never_ordered_but_available
-
-
+    def get_never_ordered_but_available(self):
+        return KindOfClothe.objects.all().filter(
+            name__in = self.get_names_of_never_ordered_but_available()
+            )
 
 
 class EmployeeDetailView(generic.DetailView):
