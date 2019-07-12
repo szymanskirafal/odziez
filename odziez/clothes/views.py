@@ -1,3 +1,4 @@
+from django.urls import reverse_lazy
 from django.urls import reverse
 from django.views import generic
 
@@ -15,7 +16,7 @@ class KindsOfClothesListView(generic.ListView):
 class ClotheCreateView(generic.CreateView):
     form_class = ClotheCreateForm
     model = Clothe
-    success_url = '/'
+    success_url = reverse_lazy('employees:employees')
     template_name = "clothes/clothe-create.html"
 
     def form_valid(self, form):

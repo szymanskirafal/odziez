@@ -1,8 +1,55 @@
+from django.db.models import Q
+from django.utils.timezone import localdate
 from django.views import generic
 
 from clothes.models import KindOfClothe, Clothe
 
 from .models import Employee
+
+
+class EmployeeNewDetailView(generic.DetailView):
+    context_object_name = 'employee'
+    model = Employee
+    template_name = 'employees/employee-new.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['never_ordered_but_available'] = self.get_never_ordered_but_available()
+        return context
+
+    def get_position(self):
+        employee = self.get_object()
+        return employee.job.position
+
+    def get_available(self):
+        return KindOfClothe.objects.all().filter(available_for = self.get_position())
+
+    def get_ordered_or_prepared_to_order(self):
+        clothes = Clothe.objects.all()
+        clothes = clothes.filter(employee = self.object)
+        ordered_or_prepared_to_order = clothes.filter(Q(ordered__lte = localdate()) | Q(prepared_to_order = True))
+        return ordered_or_prepared_to_order
+
+    def get_names_of_available(self):
+        return set([kind.name for kind in self.get_available()])
+
+    def get_names_of_ordered_or_prepared_to_order(self):
+        return set([clothe.kind.name for clothe in self.get_ordered_or_prepared_to_order()])
+
+    # def get_never_ordered_but_available(self):
+    #    never_ordered_but_available = [
+    #        name
+    #        for name in self.get_names_of_available()
+    #        if name not in self.get_names_of_ordered_or_prepared_to_order()
+    #        ]
+
+    #    never_ordered_but_available = KindOfClothe.objects.all().filter(
+    #        name__in = never_ordered_but_available
+    #        )
+
+    #    return never_ordered_but_available
+
+
 
 
 class EmployeeDetailView(generic.DetailView):
@@ -47,6 +94,7 @@ class EmployeeDetailView(generic.DetailView):
         clothes_ordered = self.get_clothes_ordered()
         for clothe in clothes_ordered:
             names_of_kinds_of_clothes_ordered.append(clothe.kind.name)
+            # [clothe.kind.name for clothe in self.get_clothes_ordered()]
         return names_of_kinds_of_clothes_ordered
 
     def get_kinds_of_clothes(self):

@@ -113,7 +113,7 @@ class Employee(Person):
         return self.name + ' ' + self.surname  + ' ' + str(self.job)
 
     def get_absolut_url(self):
-        return reverse('employees:employee', args=[str(self.id)])
+        return reverse('employees:employee-new', args=[str(self.id)])
 
 
 class Manager(Person):
