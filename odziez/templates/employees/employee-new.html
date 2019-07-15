@@ -26,7 +26,7 @@
 {% if kinds_can_be_ordered_again %}
   {% for kind in kinds_can_be_ordered_again %}
     <div class="jumbotron">
-      <p>znowu {{ kind.name }}</p>
+      <p>{{ kind.name }}</p>
       <a class="btn btn-primary" href="{% url 'orders:redirect' kind.pk employee.pk %}" role="button">Zamów</a>
 
       <p>Historia zamówień tego ubrania</p>
@@ -44,7 +44,7 @@
   <p>Możliwe, że termin wymiany danego ubrania jeszcze nie nadszedł.</p>
 {% endif %}
 
-<h3>Ubrania w trakcie zamawiania.</h3>
+<h3>Ubrania przygotowane do zamówienia.</h3>
 {% if prepared_to_order %}
   {% for clothe in prepared_to_order %}
     <div class="jumbotron">
@@ -56,7 +56,23 @@
 {% endif %}
 
 <h3>Ubrania posiadane, których nie można zamówić znowu.</h3>
-{% if rest_of_clothes %}
+{% if can_not_be_ordered_again %}
+  {% for kind in get_kinds_can_not_be_ordered_again %}
+    <div class="jumbotron">
+      <p>{{ kind.name }}</p>
+      <p>Historia zamówień tego ubrania</p>
+      {% for clothe in can_not_be_ordered_again %}
+        {% if clothe.kind ==  kind %}
+          <p>zamówione {{ clothe.ordered|date:"d - m - Y" }}<p>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endfor %}
+{% else %}
+  <p>Nie ma takich ubrań, które były zamawiane w przeszłości i nie mogą być zamówione znowu.</p>
+{% endif %}
+
+
 
 
 

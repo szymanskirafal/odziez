@@ -23,12 +23,25 @@ class EmployeeNewDetailView(generic.DetailView):
         context['can_be_ordered_again'] = self.get_can_be_ordered_again()
         context['kinds_can_be_ordered_again'] = self.get_kinds_can_be_ordered_again()
         context['prepared_to_order'] = self.get_prepared_to_order()
-        context['rest_of_clothes'] = self.get_rest_of_clothes()
+        context['can_not_be_ordered_again'] = self.get_can_not_be_ordered_again()
         return context
 
-    def get_rest_of_clothes(self):
-        
-        return clothes
+    def get_can_not_be_ordered_again(self):
+        clothes = self.get_clothes_of_employee()
+        clothes = clothes.filter(prepared_to_order = False)
+        return [
+            clothe
+            for clothe
+            in clothes
+            if clothe.can_be_ordered_again == False
+            ]
+
+    def get_kinds_can_not_be_ordered_again(self):
+        return set(
+            clothe.kind
+            for clothe
+            in self.get_can_not_be_ordered_again()
+            )
 
     def get_prepared_to_order(self):
         clothes = self.get_clothes_of_employee()
