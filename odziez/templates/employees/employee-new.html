@@ -8,13 +8,55 @@
 <p>{{ employee.job.position }}</p>
 <p>{{ employee.job.work_place }}</p>
 
-<h2>Ubrania, które można zamówić</h2>
+<h2>Ubrania</h2>
 
 <h3>Niezamawiane nigdy wcześniej.</h3>
+{% if never_ordered_but_available %}
+  {% for kind in never_ordered_but_available %}
+    <div class="jumbotron">
+      <p>{{ kind.name }}</p>
+      <a class="btn btn-primary" href="{% url 'orders:redirect' kind.pk employee.pk %}" role="button">Zamów</a>
+    </div>
+  {% endfor %}
+{% else %}
+  <p>Nie matakich ubrań, które można zamówić, a nie zamawiano nigdy wcześniej.</p>
+{% endif %}
 
-{% for kind in never_ordered_but_available %}
-  <p>nowy {{ kind }}</p>
-{% endfor %}
+<h3>Można zamówić znowu.</h3>
+{% if kinds_can_be_ordered_again %}
+  {% for kind in kinds_can_be_ordered_again %}
+    <div class="jumbotron">
+      <p>znowu {{ kind.name }}</p>
+      <a class="btn btn-primary" href="{% url 'orders:redirect' kind.pk employee.pk %}" role="button">Zamów</a>
+
+      <p>Historia zamówień tego ubrania</p>
+      {% for clothe in can_be_ordered_again %}
+        {% if clothe.kind ==  kind %}
+          <p>zamówione {{ clothe.ordered|date:"d - m - Y" }}<p>
+        {% endif %}
+      {% endfor %}
+
+    </div>
+  {% endfor %}
+
+{% else %}
+  <p>Nie ma takich ubrań, które można zamówić kolejny raz.</p>
+  <p>Możliwe, że termin wymiany danego ubrania jeszcze nie nadszedł.</p>
+{% endif %}
+
+<h3>Ubrania w trakcie zamawiania.</h3>
+{% if prepared_to_order %}
+  {% for clothe in prepared_to_order %}
+    <div class="jumbotron">
+      <p>{{ clothe.kind.name }}</p>
+    </div>
+  {% endfor %}
+{% else %}
+  <p>Nie ma takich ubrań, których zamówienie jest przygotowane do wysłania.</p>
+{% endif %}
+
+<h3>Ubrania posiadane, których nie można zamówić znowu.</h3>
+{% if rest_of_clothes %}
 
 
 
