@@ -6,6 +6,69 @@ from clothes.models import KindOfClothe, Clothe
 
 from .models import Employee
 
+class EmployeeDetailView(generic.DetailView):
+    context_object_name = 'employee'
+    model = Employee
+    template_name = 'employees/employee.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['kinds_that_can_be_ordered'] = self.get_kinds_that_can_be_ordered()
+        return context
+
+    #def get_kinds_available(self):
+    #    return KindOfClothe.objects.all().filter(
+    #        available_for = self.object.job.position)
+
+    #def get_kinds_ordered(self):
+    #    return (
+    #        clothe.kind
+    #        for clothe
+    #        in self.get_clothes_ordered()
+    #        )
+
+    #def get_clothes_ordered(self):
+    #    return Clothe.objects.all().filter(employee = self.get_object())
+
+    def get_kinds_not_ordered_yet_but_availalble(self):
+
+        kinds_available = KindOfClothe.objects.all().filter(
+            available_for = self.object.job.position)
+
+        clothes_ordered = Clothe.objects.all().filter(employee = self.object)
+
+        kinds_ordered = set(
+            clothe.kind
+            for clothe
+            in clothes_ordered
+            )
+
+        return set(
+            kind
+            for kind
+            in kinds_available
+            if kind not in kinds_ordered
+            )
+
+    def get_kinds_that_can_be_ordered_again_but_not_prepared_to_order(self):
+        clothes = self.object.clothes
+        clothes = clothes.filter(prepared_to_order = False)
+        return set(
+            clothe.kind
+            for clothe
+            in clothes
+            if clothe.can_be_ordered_again == True
+            )
+
+    def get_kinds_that_can_be_ordered(self):
+        kinds = set(
+            kind
+            for kind
+            in (self.get_kinds_that_can_be_ordered_again_but_not_prepared_to_order() | self.get_kinds_not_ordered_yet_but_availalble())
+            )
+        return kinds
+
+
 
 class EmployeeNewDetailView(generic.DetailView):
     context_object_name = 'employee'
@@ -140,7 +203,7 @@ class EmployeeNewDetailView(generic.DetailView):
             )
 
 
-class EmployeeDetailView(generic.DetailView):
+class EmployeeOldDetailView(generic.DetailView):
     context_object_name = 'employee'
     model = Employee
     template_name = 'employees/employee.html'

@@ -8,17 +8,6 @@
 <p>{{ employee.job.position }}</p>
 <p>{{ employee.job.work_place }}</p>
 
-<h3>Ubrania, które można zamówić</h3>
-
-{% for kind in kinds_that_can_be_ordered %}
-  <div class="jumbotron">
-    <p>{{ kind.name }}</p>
-    <a class="btn btn-success" href="{% url 'orders:redirect' kind.pk employee.pk %}" role="button">Zamów</a>
-  </div>
-{% endfor %}
-
-<!--
-
 {% for kind in kinds_of_available_clothes.all %}
 
   <div class="jumbotron">
@@ -62,5 +51,5 @@
   </div>
 
 {% endfor %}
--->
+
 {% endblock content %}

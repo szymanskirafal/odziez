@@ -11,8 +11,8 @@ urlpatterns = [
     ),
     path(
         "<int:pk>",
-        view=views.EmployeeNewDetailView.as_view(),
-        name="employee-new",
+        view=views.EmployeeDetailView.as_view(),
+        name="employee",
     ),
 
 ]
