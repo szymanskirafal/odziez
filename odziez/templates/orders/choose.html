@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h1>Zamówienia</h1>
+<h2></h2>
+<a class="btn btn-success btn-lg" href="{% url 'orders:prepared' %}" role="button">Bieżące zamówienie</a>
+<a class="btn btn-primary" href="#" role="button">Archiwalne zamówienia</a>
+
+
+{% endblock content %}

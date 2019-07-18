@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h1>Zamówienie przygotowane do wysłania.</h1>
+<p>order {{ order }}</p>
+
+{% for name in names %}
+  <p>name {{ name }}</p>
+{% endfor %}
+
+<!--
+{% for clothe in clothes %}
+  <p>clothe {{ clothe }}</p>
+{% endfor %}
+
+{% for clothe in order.clothes_ordered.all %}
+  <p>clothe {{ clothe }}</p>
+{% endfor %}
+-->
+<hr>
+
+<a class="btn btn-success btn-lg" href="#" role="button">Wyślij</a>
+
+
+{% endblock content %}

@@ -23,8 +23,13 @@ class Clothe(models.Model):
     kind = models.ForeignKey(
         KindOfClothe,
         on_delete = models.CASCADE,
-        related_name = 'chosen',)
-    order = models.ForeignKey(Order, on_delete = models.CASCADE)
+        related_name = 'chosen',
+        )
+    order = models.ForeignKey(
+        Order,
+        on_delete = models.CASCADE,
+        related_name = 'clothes_ordered',
+        )
     employee = models.ForeignKey(
         Employee,
         on_delete = models.CASCADE,

@@ -1,8 +1,46 @@
 from django.views import generic
 
-from clothes.models import KindOfClothe
-from employees.models import Employee
+from clothes.models import Clothe, KindOfClothe
+from employees.models import Employee, Manager
 from orders.models import Order
+
+
+class OrdersChooseTemplateView(generic.TemplateView):
+    template_name = "orders/choose.html"
+
+
+class OrderNextOrSendTemplateView(generic.TemplateView):
+    template_name = "orders/order-next-or-send.html"
+
+
+class OrdersArchivedListView(generic.ListView):
+    template_name = "orders/archived.html"
+
+
+class OrdersPreparedTemplateView(generic.TemplateView):
+    template_name = "orders/prepared.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.request.user.manager.pk
+        manager = Manager.objects.get(pk = pk)
+        orders = Order.objects.all().filter(manager = manager)
+        #.prefetch_related('clothes_ordered')
+        order = orders.get(during_composing = True)
+        #order = order.prefetch_related('clothes_ordered')
+        #context['clothes'] = Clothe.objects.all().filter(order = order)
+        #context['order'] = order
+        clothes = Clothe.objects.all().filter(order = order)
+        names = [
+            clothe.kind.name
+            for clothe
+            in clothes
+            ]
+        context['names'] = names
+        #context['clothes'] = clothes
+        return context
+
+
 
 
 class OrderTemplateView(generic.TemplateView):
