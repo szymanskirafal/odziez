@@ -14,5 +14,10 @@ urlpatterns = [
         view=views.ClotheCreateView.as_view(),
         name="clothe-create",
     ),
+    path(
+        "delete/<int:pk>/",
+        view=views.ClotheDeleteView.as_view(),
+        name="delete",
+    ),
 
 ]

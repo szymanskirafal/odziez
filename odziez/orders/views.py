@@ -29,18 +29,16 @@ class OrdersPreparedTemplateView(generic.TemplateView):
         order = orders.get(during_composing = True)
         #order = order.prefetch_related('clothes_ordered')
         #context['clothes'] = Clothe.objects.all().filter(order = order)
-        #context['order'] = order
+        context['order'] = order
         clothes = Clothe.objects.all().filter(order = order)
-        names = [
-            clothe.kind.name
-            for clothe
-            in clothes
-            ]
-        context['names'] = names
-        #context['clothes'] = clothes
+        #names = [
+        #    clothe.kind.name
+        #    for clothe
+        #    in clothes
+        #    ]
+        #context['names'] = names
+        context['clothes'] = clothes
         return context
-
-
 
 
 class OrderTemplateView(generic.TemplateView):

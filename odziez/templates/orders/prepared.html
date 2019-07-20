@@ -4,24 +4,20 @@
 
 
 <h1>Zamówienie przygotowane do wysłania.</h1>
-<p>order {{ order }}</p>
+<p>Zamówienie dla {{ order.place_of_delivery.name }}</p>
 
-{% for name in names %}
-  <p>name {{ name }}</p>
-{% endfor %}
 
-<!--
 {% for clothe in clothes %}
-  <p>clothe {{ clothe }}</p>
+  <div class="jumbotron">
+    <p>{{ clothe.kind.name }} - {{ clothe.kind.description }}</p>
+    <p>{{ clothe.employee.name }} {{ clothe.employee.surname }}</p>
+    <a class="btn btn-danger" href="{% url 'clothes:delete' clothe.id %}" role="button">Usuń</a>
+  </div>
 {% endfor %}
 
-{% for clothe in order.clothes_ordered.all %}
-  <p>clothe {{ clothe }}</p>
-{% endfor %}
--->
 <hr>
 
-<a class="btn btn-success btn-lg" href="#" role="button">Wyślij</a>
+<a class="btn btn-success btn-lg" href="#" role="button">Wyślij zamówinie</a>
 
 
 {% endblock content %}

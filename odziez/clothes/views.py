@@ -28,12 +28,20 @@ class ClotheCreateView(generic.CreateView):
         form.instance.prepared_to_order = True
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['employee'] = Employee.objects.get(pk = self.kwargs['employee_pk'])
+        context['kind'] = KindOfClothe.objects.get(pk = self.kwargs['kind_pk'])
+        return context
 
-#    def get_context_data(self, **kwargs):
-#        context = super().get_context_data(**kwargs)
-#        context['employee'] = Employee.objects.get(pk = self.kwargs['employee_pk'])
-#        context['order'] = Order.objects.get(pk = self.kwargs['order_pk'])
-#        return context
+class ClotheDeleteView(generic.DeleteView):
+    context_object_name = 'clothe'
+    model = Clothe
+    template_name = "clothes/delete.html"
+    success_url = reverse_lazy('orders:prepared')
+
+
+#
 
 class KindTemplateView(generic.TemplateView):
     template_name = 'clothes/kind-template.html'
