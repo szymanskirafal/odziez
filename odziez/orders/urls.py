@@ -29,5 +29,20 @@ urlpatterns = [
         view=views.OrdersArchivedListView.as_view(),
         name="archived",
     ),
+    path(
+        "send/<int:pk>/",
+        view=views.OrderSendUpdateView.as_view(),
+        name="send",
+    ),
+
 
 ]
+
+"""
+
+path(
+    "sent/",
+    view=views.OrderSentTemplateView.as_view(),
+    name="sent",
+),
+"""

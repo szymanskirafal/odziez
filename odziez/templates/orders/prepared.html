@@ -17,7 +17,7 @@
 
 <hr>
 
-<a class="btn btn-success btn-lg" href="#" role="button">Wyślij zamówinie</a>
+<a class="btn btn-success btn-lg" href="{% url 'orders:send' order.id %}" role="button">Wyślij zamówinie</a>
 
 
 {% endblock content %}

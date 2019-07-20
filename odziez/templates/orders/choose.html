@@ -5,7 +5,12 @@
 
 <h1>Zamówienia</h1>
 <h2></h2>
-<a class="btn btn-success btn-lg" href="{% url 'orders:prepared' %}" role="button">Bieżące zamówienie</a>
+{% if order_during_composing %}
+  <a class="btn btn-success btn-lg" href="{% url 'orders:prepared' %}" role="button">Bieżące zamówienie</a>
+{% else %}
+  <p>Nie przygotowujesz żadnego zamówienia do wysłania póki co.</p>
+  <p>Możesz zobaczyć listę zamówień wysłanych do tej pory.</p>
+{% endif %}
 <a class="btn btn-primary" href="#" role="button">Wcześniejsze zamówienia</a>
 
 
