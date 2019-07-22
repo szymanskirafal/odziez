@@ -138,3 +138,6 @@ class Supervisor(models.Model):
 
     class Meta:
         verbose_name_plural = 'Nadzorcy'
+
+    def __str__(self):
+        return self.name

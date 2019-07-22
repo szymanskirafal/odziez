@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h1>Supervisor Dashboard</h1>
+{% for order in orders %}
+  <p>Zamówienie przysłane przez {{ order.manager }} dnia {{ order.date_of_sending_to_supervisor|date:"d - m - Y" }}
+{% endfor %}
+<a class="btn btn-primary" href="#" role="button">Wcześniejsze zamówienia</a>
+
+
+{% endblock content %}

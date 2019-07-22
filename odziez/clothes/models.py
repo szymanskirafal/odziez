@@ -7,17 +7,31 @@ import datetime
 from orders.models import Order
 from employees.models import Employee, Position
 
+
+class Manufacturer(models.Model):
+    name = models.CharField(max_length = 150, unique = True)
+    email = models.EmailField()
+
+    class Meta:
+        verbose_name_plural = 'Producenci'
+
+    def __str__(self):
+        return self.name
+
+
 class KindOfClothe(models.Model):
     name = models.CharField(max_length = 150, unique = True)
     description = models.CharField(max_length = 300, blank = True)
     months_to_exchange = models.PositiveSmallIntegerField()
     available_for = models.ManyToManyField(Position)
+    manufacturer = models.ForeignKey(Manufacturer, on_delete = models.CASCADE)
 
     class Meta:
         verbose_name_plural = 'Rodzaje ubrań'
 
     def __str__(self):
         return self.name + ' ' + 'wymiana co ' + str(self.months_to_exchange) + 'przysluguje '+ str(self.available_for)
+
 
 class Clothe(models.Model):
     kind = models.ForeignKey(

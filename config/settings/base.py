@@ -79,6 +79,7 @@ LOCAL_APPS = [
     "odziez.employees.apps.EmployeesConfig",
     "odziez.orders.apps.OrdersConfig",
     "odziez.users.apps.UsersConfig",
+    "odziez.supervisor.apps.SupervisorConfig",
 
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -267,5 +268,3 @@ SOCIALACCOUNT_ADAPTER = "odziez.users.adapters.SocialAccountAdapter"
 
 # Your stuff...
 # ------------------------------------------------------------------------------
-# cart
-CART_SESSION_ID = 'cart'
