@@ -9,5 +9,10 @@ urlpatterns = [
         view=views.SupervisorDashboardTemplateView.as_view(),
         name="dashboard",
     ),
+    path(
+        "order/<int:pk>",
+        view=views.SupervisorOrderDetailView.as_view(),
+        name="order",
+    ),
 
 ]
