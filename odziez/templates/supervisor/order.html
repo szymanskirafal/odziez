@@ -20,7 +20,7 @@
           <p>Zamawiane pierwszy raz.</p>
         {% endif %}
         <p>{{ c.prepared_to_order|date:"d - m - Y" }}</p>
-        <a class="btn btn-danger" href="#" role="button">Usuń z zamówienia</a>
+        <a class="btn btn-danger" href="{% url 'supervisor:delete' clothe.pk %}" role="button">Usuń z zamówienia</a>
 
       {% endif %}
     {% endfor %}
@@ -28,6 +28,7 @@
 {% endfor %}
 <h3>Wyślij zamówienie do producenta.</h3>
 <a class="btn btn-success btn-lg" href="#" role="button">Wyślij</a>
+<br><br>
 
 
 

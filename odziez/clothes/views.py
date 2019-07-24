@@ -31,6 +31,7 @@ class ClotheCreateView(generic.CreateView):
         context['kind'] = KindOfClothe.objects.get(pk = self.kwargs['kind_pk'])
         return context
 
+
 class ClotheDeleteView(generic.DeleteView):
     context_object_name = 'clothe'
     model = Clothe

@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
+from clothes.models import Clothe
 from orders.models import Order
 
 class SupervisorPassesTestMixin(UserPassesTestMixin):
@@ -15,6 +16,11 @@ class SupervisorPassesTestMixin(UserPassesTestMixin):
             test = False
         return test
 
+class SupervisorClotheDeleteView(generic.DeleteView):
+    context_object_name = 'clothe'
+    model = Clothe
+    template_name = "clothes/delete.html"
+    success_url = reverse_lazy('supervisor:dashboard')
 
 
 class SupervisorOrderDetailView(
