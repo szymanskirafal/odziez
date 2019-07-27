@@ -4,13 +4,19 @@
 
 
 <h1>Zamówienia</h1>
-<h2></h2>
+<br><br>
 {% if order_during_composing %}
+  <h3>Zamówienie, które przygotowujesz i nie wysłałeś jeszcze.</h3>
   <a class="btn btn-success btn-lg" href="{% url 'orders:prepared' %}" role="button">Bieżące zamówienie</a>
 {% else %}
   <p>Nie przygotowujesz żadnego zamówienia do wysłania póki co.</p>
   <p>Możesz zobaczyć listę zamówień wysłanych do tej pory.</p>
 {% endif %}
+<hr>
+<h3>Zamówienia - oczekiwanie na dostawę.</h3>
+<a class="btn btn-primary" href="{% url 'orders:sent' %}" role="button">Sprawdź</a>
+<hr>
+<h3>Wcześniejsze zamówienia.</h3>
 <a class="btn btn-primary" href="#" role="button">Wcześniejsze zamówienia</a>
 
 

@@ -1,10 +1,11 @@
+from django.core.mail import EmailMessage
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
 from django.utils.timezone import localdate
 from django.views import generic
 
 from clothes.models import Clothe, KindOfClothe
-from employees.models import Employee, Manager
+from employees.models import Employee, Manager, Supervisor
 
 from .forms import OrderSendToSupervisorUpdateForm
 from .models import Order
@@ -81,9 +82,31 @@ class OrderSendUpdateView(generic.UpdateView):
         form.instance.composed = True
         form.instance.sent_to_supervisor = True
         form.instance.date_of_sending_to_supervisor = localdate()
+        supervisor = Supervisor.objects.first()
+        email = EmailMessage(
+            subject = 'Zamówienie odzieży roboczej',
+            body = 'W aplikacji jest nowe zamówienie',
+            to = [supervisor.email],
+        )
+
+        email.send()
         return super().form_valid(form)
 
-"""
-class OrderSentTemplateView(generic.TemplateView):
-    template_name = "orders/sent-to-supervisor.html"
-"""
+
+class OrderSentToManufacturerListView(generic.ListView):
+
+    context_object_name = 'orders'
+    model = Order
+    template_name = 'orders/sent-list.html'
+
+    def get_queryset(self, **kwargs):
+        queryset = super().get_queryset(**kwargs)
+        manager = Manager.objects.get(pk = self.request.user.manager.pk)
+        orders = Order.objects.all().filter(manager = manager)
+        orders = orders.filter(sent_to_manufacturer = True)
+        return queryset
+
+class OrderSentDetailView(generic.DetailView):
+    context_object_name = 'order'
+    model = Order
+    template_name = 'orders/sent-detail.html'

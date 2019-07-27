@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h1>Zamówienie - oczekiwanie na dostawę.</h1>
+<p>Data wysłania: {{ order.date_of_sending_to_supervisor|date:"d - m - Y" }}</p>
+
+
+{% for clothe in order.clothes_ordered.all %}
+  <div class="shadow p-3 mb-5 bg-light rounded">
+    <p>{{ clothe.kind.name }} dla {{ clothe.employee.name }} {{ clothe.employee.surname }}</p>
+    
+    <a class="btn btn-primary" href="#" role="button">Przyjmij ubranie</a>
+  </div>
+{% endfor %}
+
+{% endblock content %}

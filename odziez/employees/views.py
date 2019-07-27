@@ -1,8 +1,10 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.utils.timezone import localdate
 from django.views import generic
 
 from clothes.models import KindOfClothe, Clothe
+from orders.models import Order
 
 from .models import Employee
 
@@ -68,9 +70,17 @@ class EmployeesListView(generic.ListView):
             self.work_place = self.request.user.manager.job.work_place
             return self.work_place
 
+    def get_order_not_sent(self):
+        try:
+            order = Order.objects.all().filter(manager = self.request.user.manager).filter(during_composing = True)
+        except ObjectDoesNotExist:
+            order = None
+        return order
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['work_place'] = self.get_work_place()
+        context['order_not_sent'] = self.get_order_not_sent()
         return context
 
     def get_queryset(self, **kwargs):
@@ -78,5 +88,4 @@ class EmployeesListView(generic.ListView):
         queryset = queryset.filter(
             job__work_place = self.get_work_place()
             )
-        queryset = queryset.prefetch_related('clothes')
         return queryset

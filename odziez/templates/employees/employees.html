@@ -18,4 +18,9 @@
 
 {% endfor %}
 
+{% if order_not_sent %}
+  <hr>
+  <p>Masz zamówienie przygotowane do wysłania.</p>
+  <a class="btn btn-primary" href="{% url 'orders:prepared' %}" role="button">Sprawdź</a>
+{% endif %}
 {% endblock content %}

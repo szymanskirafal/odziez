@@ -34,6 +34,16 @@ urlpatterns = [
         view=views.OrderSendUpdateView.as_view(),
         name="send",
     ),
+    path(
+        "sent/",
+        view=views.OrderSentToManufacturerListView.as_view(),
+        name="sent",
+    ),
+    path(
+        "sent/<int:pk>/",
+        view=views.OrderSentDetailView.as_view(),
+        name="sent-detail",
+    ),
 
 
 ]
