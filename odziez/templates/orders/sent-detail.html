@@ -4,14 +4,21 @@
 
 
 <h1>Zamówienie - oczekiwanie na dostawę.</h1>
-<p>Data wysłania: {{ order.date_of_sending_to_supervisor|date:"d - m - Y" }}</p>
+<p>Data wysłania zamówienia: {{ order.date_of_sending_to_supervisor|date:"d - m - Y" }}</p>
 
 
 {% for clothe in order.clothes_ordered.all %}
   <div class="shadow p-3 mb-5 bg-light rounded">
-    <p>{{ clothe.kind.name }} dla {{ clothe.employee.name }} {{ clothe.employee.surname }}</p>
-    
-    <a class="btn btn-primary" href="#" role="button">Przyjmij ubranie</a>
+    <h2 class="display-5">{{ clothe.kind.name }} dla {{ clothe.employee.name }} {{ clothe.employee.surname }}</h2>
+    <p>Ubranie dostarczono zgodnie z zamówieniem.</p>
+    <a class="btn btn-success" href="#" role="button">Ubranie jest OK</a>
+    <hr>
+    <p>Ubranie dostarczono, ale nie takie, jak zamawiano lub wadliwe.</p>
+    <a class="btn btn-danger" href="#" role="button">Złe ubranie</a>
+    <hr>
+    <p>Nie dostarczono ubrania w ogóle.</p>
+    <a class="btn btn-danger" href="#" role="button">Brak ubrania</a>
+
   </div>
 {% endfor %}
 

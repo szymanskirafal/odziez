@@ -52,6 +52,9 @@ class Clothe(models.Model):
     prepared_to_order = models.BooleanField(null = False, blank = False, default = False)
     ordered = models.DateField(null = True, blank = True)
     received = models.DateField(null = True, blank = True)
+    delivered_ok = models.BooleanField(null = False, blank = False, default = False)
+    delivered_with_defects = models.BooleanField(null = False, blank = False, default = False)
+    not_delivered = models.BooleanField(null = False, blank = False, default = False)
     owned = models.DateField(null = True, blank = True)
     destroyed = models.DateField(null = True, blank = True)
 
