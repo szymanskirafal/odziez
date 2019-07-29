@@ -19,5 +19,20 @@ urlpatterns = [
         view=views.ClotheDeleteView.as_view(),
         name="delete",
     ),
+    path(
+        "delivered/<int:pk>/",
+        view=views.ClotheDeliveredUpdateView.as_view(),
+        name="delivered",
+    ),
+    path(
+        "delivered-with_defects/<int:pk>/",
+        view=views.ClotheDeliveredWithDefectsUpdateView.as_view(),
+        name="delivered_with_defects",
+    ),
+    path(
+        "not-delivered/<int:pk>/",
+        view=views.ClotheNotDeliveredUpdateView.as_view(),
+        name="not_delivered",
+    ),
 
 ]

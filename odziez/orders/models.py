@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from employees.models import Manager, WorkPlace
 
@@ -17,3 +18,6 @@ class Order(models.Model):
 
     class Meta:
         verbose_name_plural = 'Zamówienia'
+
+    def get_absolute_url(self):
+        return reverse('orders:order', args=[str(self.id)])

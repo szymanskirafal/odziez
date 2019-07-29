@@ -56,6 +56,7 @@ class Clothe(models.Model):
     delivered_with_defects = models.BooleanField(null = False, blank = False, default = False)
     not_delivered = models.BooleanField(null = False, blank = False, default = False)
     owned = models.DateField(null = True, blank = True)
+    in_use = models.BooleanField(null = False, blank = False, default = False)
     destroyed = models.DateField(null = True, blank = True)
 
     class Meta:
