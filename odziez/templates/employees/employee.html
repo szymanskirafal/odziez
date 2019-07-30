@@ -7,7 +7,8 @@
 <p>{{ employee.name }} {{ employee.surname }}</p>
 <p>{{ employee.job.position }}</p>
 <p>{{ employee.job.work_place }}</p>
-
+<a class="btn btn-primary" href="{% url 'employees:update' employee.pk %}" role="button">Edytuj dane pracownika</a>
+<br><br>
 <h3>Ubrania, które można zamówić</h3>
 
 {% for kind in kinds_that_can_be_ordered %}

@@ -4,8 +4,7 @@
 
 
 <h1>Pracownicy</h1>
-<h2>Miejsce Pracy</h2>
-<p>{{ work_place }}</p>
+<p>Mijesce pracy: {{ work_place }}</p>
 
 {% for employee in employees %}
 
@@ -17,10 +16,13 @@
   <br>
 
 {% endfor %}
+<hr>
+<a class="btn btn-primary" href="{% url 'employees:add' %}" role="button">Dodaj nowego pracownika</a>
+
 
 {% if order_not_sent %}
   <hr>
-  <p>Masz zamówienie przygotowane do wysłania.</p>
-  <a class="btn btn-primary" href="{% url 'orders:prepared' %}" role="button">Sprawdź</a>
+  <h3>Masz zamówienie przygotowane do wysłania.</h3>
+  <a class="btn btn-primary btn-lg" href="{% url 'orders:prepared' %}" role="button">Sprawdź</a>
 {% endif %}
 {% endblock content %}

@@ -45,7 +45,6 @@ class ClotheDeliveredUpdateView(generic.UpdateView):
     context_object_name = 'clothe'
     form_class = ClotheDeliveredForm
     model = Clothe
-    #success_url = reverse_lazy('orders:sent', args = ['clothe.order.pk'])
     template_name = "clothes/delivered.html"
 
     def form_valid(self, form):
@@ -63,7 +62,6 @@ class ClotheDeliveredWithDefectsUpdateView(generic.UpdateView):
     context_object_name = 'clothe'
     form_class = ClotheDeliveredForm
     model = Clothe
-    #success_url = reverse_lazy('orders:sent', args = ['clothe.order.pk'])
     template_name = "clothes/delivered-with-defects.html"
 
     def form_valid(self, form):
@@ -81,7 +79,6 @@ class ClotheNotDeliveredUpdateView(generic.UpdateView):
     context_object_name = 'clothe'
     form_class = ClotheDeliveredForm
     model = Clothe
-    #success_url = reverse_lazy('orders:sent', args = ['clothe.order.pk'])
     template_name = "clothes/not-delivered.html"
 
     def form_valid(self, form):

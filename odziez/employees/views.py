@@ -6,7 +6,22 @@ from django.views import generic
 from clothes.models import KindOfClothe, Clothe
 from orders.models import Order
 
+from .forms import EmployeeForm
 from .models import Employee
+
+
+class EmployeeCreateView(generic.CreateView):
+    form_class = EmployeeForm
+    model = Employee
+    template_name = 'employees/add.html'
+
+
+class EmployeeUpdateView(generic.UpdateView):
+    context_object_name = 'employee'
+    form_class = EmployeeForm
+    model = Employee
+    template_name = 'employees/update.html'
+
 
 class EmployeeDetailView(generic.DetailView):
     context_object_name = 'employee'
