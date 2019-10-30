@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.utils.timezone import localdate
+from django.utils.translation import ugettext_lazy as _
 
 import datetime
 
@@ -9,7 +10,7 @@ from employees.models import Employee, Position
 
 
 class Manufacturer(models.Model):
-    name = models.CharField(max_length = 150, unique = True)
+    name = models.CharField(_("Name of Manufacturer"), max_length = 150, unique = True)
     email = models.EmailField()
 
     class Meta:
@@ -20,11 +21,18 @@ class Manufacturer(models.Model):
 
 
 class KindOfClothe(models.Model):
-    name = models.CharField(max_length = 150, unique = True)
-    description = models.CharField(max_length = 300, blank = True)
-    months_to_exchange = models.PositiveSmallIntegerField()
-    available_for = models.ManyToManyField(Position)
-    manufacturer = models.ForeignKey(Manufacturer, on_delete = models.CASCADE)
+    name = models.CharField(_('name'), max_length = 150, unique = True)
+    description = models.CharField(_('description'), max_length = 300, blank = True)
+    months_to_exchange = models.PositiveSmallIntegerField(_('months_to_exchange'),)
+    available_for = models.ManyToManyField(
+        Position,
+        verbose_name = _('available_for'),
+        )
+    manufacturer = models.ForeignKey(
+        Manufacturer,
+        on_delete = models.CASCADE,
+        verbose_name = _('Manufacturer'),
+        )
 
     class Meta:
         verbose_name_plural = 'Rodzaje ubrań'
@@ -38,16 +46,19 @@ class Clothe(models.Model):
         KindOfClothe,
         on_delete = models.CASCADE,
         related_name = 'chosen',
+        verbose_name = _('kind'),
         )
     order = models.ForeignKey(
         Order,
         on_delete = models.CASCADE,
         related_name = 'clothes_ordered',
+        verbose_name = _('order'),
         )
     employee = models.ForeignKey(
         Employee,
         on_delete = models.CASCADE,
         related_name = 'clothes',
+        verbose_name = _('employee'),
         )
     prepared_to_order = models.BooleanField(null = False, blank = False, default = False)
     ordered = models.DateField(null = True, blank = True)
@@ -65,7 +76,6 @@ class Clothe(models.Model):
 
     def __str__(self):
         return str(self.kind) + ' ' + str(self.employee)
-
 
     def can_be_ordered_again(self):
         today = localdate()

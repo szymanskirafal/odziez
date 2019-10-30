@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.utils.translation import ugettext_lazy as _
 
 from odziez.users.models import User
 
@@ -24,12 +25,12 @@ class WorkPlace(models.Model):
         choices = TYPE_OF_WORKPLACE,
         default = STATION,
         )
-    name = models.CharField(max_length = 150)
-    street = models.CharField(max_length = 50)
-    city = models.CharField(max_length = 50)
-    postal_code = models.CharField(max_length = 8)
-    phone = models.CharField(max_length = 13)
-    email = models.EmailField()
+    name = models.CharField(_('name'), max_length = 150)
+    street = models.CharField(_('street'), max_length = 50)
+    city = models.CharField(_('city'), max_length = 50)
+    postal_code = models.CharField(_('postal_code'), max_length = 8)
+    phone = models.CharField(_('phone'), max_length = 13)
+    email = models.EmailField(_('email'), )
 
     class Meta:
         verbose_name_plural = 'Miejsca Pracy'
@@ -39,8 +40,8 @@ class WorkPlace(models.Model):
 
 
 class Position(models.Model):
-    name = models.CharField(max_length = 150)
-    description = models.CharField(max_length = 300)
+    name = models.CharField(_('name'), max_length = 150)
+    description = models.CharField(_('description'), max_length = 300)
 
     class Meta:
         verbose_name_plural = 'Stanowiska'
@@ -53,12 +54,18 @@ class Job(TimeStampedModel):
     work_place = models.ForeignKey(
         WorkPlace,
         on_delete = models.CASCADE,
+        verbose_name = _('work_place'),
         )
     position = models.ForeignKey(
         Position,
         on_delete = models.CASCADE,
+        verbose_name = _('position'),
         )
-    size_of_job = models.DecimalField(max_digits = 3, decimal_places = 2)
+    size_of_job = models.DecimalField(
+        _('size_of_job'),
+        max_digits = 3,
+        decimal_places = 2,
+        )
 
     class Meta:
         verbose_name_plural = 'Etaty'
@@ -87,14 +94,14 @@ class Person(TimeStampedModel):
         (M, 'M'),
         (S, 'S'),
         ]
-    sex = models.CharField(max_length = 1, choices = SEX,)
-    name = models.CharField(max_length = 15)
-    surname = models.CharField(max_length = 40)
-    height = models.PositiveSmallIntegerField()
-    colar = models.PositiveSmallIntegerField()
-    width_waist = models.PositiveSmallIntegerField()
-    body_size = models.CharField(max_length = 2, choices = SIZE,)
-    shoe_size = models.PositiveSmallIntegerField()
+    sex = models.CharField(_('sex'), max_length = 1, choices = SEX,)
+    name = models.CharField(_('name'), max_length = 15)
+    surname = models.CharField(_('surname'), max_length = 40)
+    height = models.PositiveSmallIntegerField(_('height'), )
+    colar = models.PositiveSmallIntegerField(_('colar'), )
+    width_waist = models.PositiveSmallIntegerField(_('width_waist'), )
+    body_size = models.CharField(_('body_size'), max_length = 2, choices = SIZE,)
+    shoe_size = models.PositiveSmallIntegerField(_('shoe_size'), )
 
     class Meta:
         abstract = True
@@ -104,6 +111,7 @@ class Employee(Person):
     job = models.ForeignKey(
         Job,
         on_delete = models.CASCADE,
+        verbose_name = _('job'),
         )
 
     class Meta:
@@ -120,6 +128,7 @@ class Manager(Person):
     job = models.ForeignKey(
         Job,
         on_delete = models.CASCADE,
+        verbose_name = _('job'),
         )
     user = models.OneToOneField(User, on_delete = models.CASCADE)
     email = models.EmailField()
@@ -132,9 +141,13 @@ class Manager(Person):
 
 
 class Supervisor(models.Model):
-    user = models.OneToOneField(User, on_delete = models.CASCADE)
-    name = models.CharField(max_length = 50)
-    email = models.EmailField()
+    user = models.OneToOneField(
+        User,
+        on_delete = models.CASCADE,
+        verbose_name = _('job'),
+        )
+    name = models.CharField(_('job'), max_length = 50)
+    email = models.EmailField(_('email'), )
 
     class Meta:
         verbose_name_plural = 'Nadzorcy'
