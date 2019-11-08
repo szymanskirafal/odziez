@@ -10,10 +10,11 @@ from employees.models import Employee, Position
 
 
 class Manufacturer(models.Model):
-    name = models.CharField(_("Name of Manufacturer"), max_length = 150, unique = True)
+    name = models.CharField(_("Nazwa Producetna"), max_length = 150, unique = True)
     email = models.EmailField()
 
     class Meta:
+        verbose_name = 'Producent'
         verbose_name_plural = 'Producenci'
 
     def __str__(self):
