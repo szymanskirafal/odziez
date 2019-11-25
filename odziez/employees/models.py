@@ -51,18 +51,35 @@ class Position(models.Model):
 
 
 class Job(TimeStampedModel):
+    name = models.CharField(_('name'), max_length = 150)
     work_place = models.ForeignKey(
         WorkPlace,
         on_delete = models.CASCADE,
         verbose_name = _('work_place'),
         )
-    position = models.ForeignKey(
+    position_1 = models.ForeignKey(
         Position,
         on_delete = models.CASCADE,
+        related_name = 'first_position',
         verbose_name = _('position'),
         )
-    size_of_job = models.DecimalField(
+    size_of_position_1 = models.DecimalField(
         _('size_of_job'),
+        max_digits = 3,
+        decimal_places = 2,
+        )
+    position_2 = models.ForeignKey(
+        Position,
+        null = False,
+        blank = True,
+        on_delete = models.CASCADE,
+        related_name = 'second_position',
+        verbose_name = _('position'),
+        )
+    size_of_position_2 = models.DecimalField(
+        _('size_of_job'),
+        null = False,
+        blank = True,
         max_digits = 3,
         decimal_places = 2,
         )
@@ -71,10 +88,9 @@ class Job(TimeStampedModel):
         verbose_name_plural = 'Etaty'
 
     def __str__(self):
-        job = str(self.size_of_job)
-        position = str(self.position)
+        job = str(self.name)
         work_place = str(self.work_place)
-        return 'etat - ' + job + '  ' + position + ' ' + work_place
+        return 'praca - ' + job + '  ' + work_place
 
 
 class Person(TimeStampedModel):
