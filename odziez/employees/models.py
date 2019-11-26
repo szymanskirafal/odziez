@@ -41,7 +41,7 @@ class WorkPlace(models.Model):
 
 class Position(models.Model):
     name = models.CharField(_('name'), max_length = 150)
-    description = models.CharField(_('description'), max_length = 300)
+    description = models.CharField(_('description'), blank = True, max_length = 300)
 
     class Meta:
         verbose_name_plural = 'Stanowiska'
