@@ -39,7 +39,13 @@ class KindOfClothe(models.Model):
         verbose_name_plural = 'Rodzaje ubrań'
 
     def __str__(self):
-        return self.name + ' ' + 'wymiana co ' + str(self.months_to_exchange) + 'przysluguje '+ str(self.available_for)
+        names = set(
+           position.name
+           for position
+           in self.available_for.all()
+           )
+        positions = ', '.join(names)
+        return self.name + ', wymiana co ' + str(self.months_to_exchange) + ', przysluguje: ' + positions
 
 
 class Clothe(models.Model):

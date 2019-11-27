@@ -52,33 +52,28 @@ class Position(models.Model):
 
 class Job(TimeStampedModel):
     name = models.CharField(_('name'), max_length = 150)
-    work_place = models.ForeignKey(
-        WorkPlace,
-        on_delete = models.CASCADE,
-        verbose_name = _('work_place'),
-        )
     position_1 = models.ForeignKey(
         Position,
         on_delete = models.CASCADE,
         related_name = 'first_position',
-        verbose_name = _('position'),
+        verbose_name = _('position_1'),
         )
     size_of_position_1 = models.DecimalField(
-        _('size_of_job'),
+        _('size_of_job_1'),
         max_digits = 3,
         decimal_places = 2,
         )
     position_2 = models.ForeignKey(
         Position,
-        null = False,
+        null = True,
         blank = True,
         on_delete = models.CASCADE,
         related_name = 'second_position',
-        verbose_name = _('position'),
+        verbose_name = _('position_2'),
         )
     size_of_position_2 = models.DecimalField(
-        _('size_of_job'),
-        null = False,
+        _('size_of_job_2'),
+        null = True,
         blank = True,
         max_digits = 3,
         decimal_places = 2,
@@ -88,9 +83,7 @@ class Job(TimeStampedModel):
         verbose_name_plural = 'Etaty'
 
     def __str__(self):
-        job = str(self.name)
-        work_place = str(self.work_place)
-        return 'praca - ' + job + '  ' + work_place
+        return self.name
 
 
 class Person(TimeStampedModel):
@@ -110,14 +103,14 @@ class Person(TimeStampedModel):
         (M, 'M'),
         (S, 'S'),
         ]
-    sex = models.CharField(_('sex'), max_length = 1, choices = SEX,)
-    name = models.CharField(_('name'), max_length = 15)
-    surname = models.CharField(_('surname'), max_length = 40)
-    height = models.PositiveSmallIntegerField(_('height'), )
-    colar = models.PositiveSmallIntegerField(_('colar'), )
-    width_waist = models.PositiveSmallIntegerField(_('width_waist'), )
-    body_size = models.CharField(_('body_size'), max_length = 2, choices = SIZE,)
-    shoe_size = models.PositiveSmallIntegerField(_('shoe_size'), )
+    name = models.CharField(_('imię'), max_length = 15)
+    surname = models.CharField(_('nazwisko'), max_length = 40)
+    sex = models.CharField(_('płeć'), max_length = 1, choices = SEX,)
+    height = models.PositiveSmallIntegerField(_('wzrost'), )
+    colar = models.PositiveSmallIntegerField(_('kołnierzyk'), )
+    width_waist = models.PositiveSmallIntegerField(_('szerokość w pasie'), )
+    body_size = models.CharField(_('rozmiar'), max_length = 2, choices = SIZE,)
+    shoe_size = models.PositiveSmallIntegerField(_('nr buta'), )
 
     class Meta:
         abstract = True
@@ -127,14 +120,19 @@ class Employee(Person):
     job = models.ForeignKey(
         Job,
         on_delete = models.CASCADE,
-        verbose_name = _('job'),
+        verbose_name = _('praca'),
+        )
+    work_place = models.ForeignKey(
+        WorkPlace,
+        on_delete = models.CASCADE,
+        verbose_name = _('miejsce pracy'),
         )
 
     class Meta:
         verbose_name_plural = 'Pracownicy'
 
     def __str__(self):
-        return self.name + ' ' + self.surname  + ' ' + str(self.job)
+        return self.name + ' ' + self.surname  + ' - ' + str(self.job) + ' - ' + str(self.work_place)
 
     def get_absolut_url(self):
         return reverse('employees:employee', args=[str(self.id)])
@@ -144,9 +142,14 @@ class Manager(Person):
     job = models.ForeignKey(
         Job,
         on_delete = models.CASCADE,
-        verbose_name = _('job'),
+        verbose_name = _('praca'),
         )
     user = models.OneToOneField(User, on_delete = models.CASCADE)
+    work_place = models.ForeignKey(
+        WorkPlace,
+        on_delete = models.CASCADE,
+        verbose_name = _('miejsce pracy'),
+        )
     email = models.EmailField()
 
     class Meta:
@@ -160,9 +163,9 @@ class Supervisor(models.Model):
     user = models.OneToOneField(
         User,
         on_delete = models.CASCADE,
-        verbose_name = _('job'),
+        verbose_name = _('użytkownik'),
         )
-    name = models.CharField(_('job'), max_length = 50)
+    name = models.CharField(_('praca'), max_length = 50)
     email = models.EmailField(_('email'), )
 
     class Meta:

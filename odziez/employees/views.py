@@ -36,7 +36,8 @@ class EmployeeDetailView(generic.DetailView):
     def get_kinds_not_ordered_yet_but_availalble(self):
 
         kinds_available = KindOfClothe.objects.all().filter(
-            available_for = self.object.job.position)
+            (Q(available_for=self.object.job.position_1) | Q(available_for=self.object.job.position_2))
+            )
 
         clothes_ordered = Clothe.objects.all().filter(employee = self.object)
 
@@ -82,7 +83,7 @@ class EmployeesListView(generic.ListView):
         if self.work_place:
             return self.work_place
         else:
-            self.work_place = self.request.user.manager.job.work_place
+            self.work_place = self.request.user.manager.work_place
             return self.work_place
 
     def get_order_not_sent(self):
@@ -101,6 +102,6 @@ class EmployeesListView(generic.ListView):
     def get_queryset(self, **kwargs):
         queryset = super().get_queryset(**kwargs)
         queryset = queryset.filter(
-            job__work_place = self.get_work_place()
+            work_place = self.get_work_place()
             )
         return queryset
