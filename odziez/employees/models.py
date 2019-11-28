@@ -51,15 +51,15 @@ class Position(models.Model):
 
 
 class Job(TimeStampedModel):
-    name = models.CharField(_('name'), max_length = 150)
+    name = models.CharField(_('Nazwa'), max_length = 150)
     position_1 = models.ForeignKey(
         Position,
         on_delete = models.CASCADE,
         related_name = 'first_position',
-        verbose_name = _('position_1'),
+        verbose_name = _('stanowisko pierwsze'),
         )
     size_of_position_1 = models.DecimalField(
-        _('size_of_job_1'),
+        _('wielkość etatu na stanowisku 1'),
         max_digits = 3,
         decimal_places = 2,
         )
@@ -69,10 +69,10 @@ class Job(TimeStampedModel):
         blank = True,
         on_delete = models.CASCADE,
         related_name = 'second_position',
-        verbose_name = _('position_2'),
+        verbose_name = _('stanowisko drugie'),
         )
     size_of_position_2 = models.DecimalField(
-        _('size_of_job_2'),
+        _('wielkość etatu nastanowisku 2'),
         null = True,
         blank = True,
         max_digits = 3,
