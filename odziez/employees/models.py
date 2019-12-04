@@ -33,6 +33,7 @@ class WorkPlace(models.Model):
     email = models.EmailField(_('email'), )
 
     class Meta:
+        verbose_name = 'Miejsce Pracy'
         verbose_name_plural = 'Miejsca Pracy'
 
     def __str__(self):
@@ -44,6 +45,7 @@ class Position(models.Model):
     description = models.CharField(_('Opis'), blank = True, max_length = 300)
 
     class Meta:
+        verbose_name = 'Stanowisko'
         verbose_name_plural = 'Stanowiska'
 
     def __str__(self):
@@ -80,6 +82,7 @@ class Job(TimeStampedModel):
         )
 
     class Meta:
+        verbose_name = 'Etat'
         verbose_name_plural = 'Etaty'
 
     def __str__(self):
@@ -129,6 +132,7 @@ class Employee(Person):
         )
 
     class Meta:
+        verbose_name = 'Pracownik'
         verbose_name_plural = 'Pracownicy'
 
     def __str__(self):
@@ -153,6 +157,7 @@ class Manager(Person):
     email = models.EmailField()
 
     class Meta:
+        verbose_name = 'Kierownik'
         verbose_name_plural = 'Kierownicy'
 
     def __str__(self):
@@ -169,6 +174,7 @@ class Supervisor(models.Model):
     email = models.EmailField(_('email'), )
 
     class Meta:
+        verbose_name = 'Nadzorca'
         verbose_name_plural = 'Nadzorcy'
 
     def __str__(self):

@@ -36,6 +36,7 @@ class KindOfClothe(models.Model):
         )
 
     class Meta:
+        verbose_name = 'Rodzaj Ubrania'
         verbose_name_plural = 'Rodzaje ubrań'
 
     def __str__(self):
@@ -79,6 +80,7 @@ class Clothe(models.Model):
 
     class Meta:
         ordering = ['-ordered']
+        verbose_name = 'Ubranie'
         verbose_name_plural = 'Ubrania pracowników'
 
     def __str__(self):
