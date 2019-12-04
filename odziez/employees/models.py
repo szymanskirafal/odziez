@@ -36,7 +36,7 @@ class WorkPlace(models.Model):
         verbose_name_plural = 'Miejsca Pracy'
 
     def __str__(self):
-        return self.name + ' ' + self.city
+        return self.name + ', ' + self.city
 
 
 class Position(models.Model):
@@ -156,7 +156,7 @@ class Manager(Person):
         verbose_name_plural = 'Kierownicy'
 
     def __str__(self):
-        return self.name + ' ' + self.surname + ' ' + str(self.job)
+        return self.name + ' ' + self.surname + ' - ' + str(self.job) + ' - ' + str(self.work_place)
 
 
 class Supervisor(models.Model):
@@ -165,7 +165,7 @@ class Supervisor(models.Model):
         on_delete = models.CASCADE,
         verbose_name = _('użytkownik'),
         )
-    name = models.CharField(_('praca'), max_length = 50)
+    name = models.CharField(_('Imię i Nazwisko'), max_length = 50)
     email = models.EmailField(_('email'), )
 
     class Meta:
