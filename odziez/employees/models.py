@@ -25,11 +25,11 @@ class WorkPlace(models.Model):
         choices = TYPE_OF_WORKPLACE,
         default = STATION,
         )
-    name = models.CharField(_('name'), max_length = 150)
-    street = models.CharField(_('street'), max_length = 50)
-    city = models.CharField(_('city'), max_length = 50)
-    postal_code = models.CharField(_('postal_code'), max_length = 8)
-    phone = models.CharField(_('phone'), max_length = 13)
+    name = models.CharField(_('Nazwa'), max_length = 150)
+    street = models.CharField(_('Ulica'), max_length = 50)
+    city = models.CharField(_('Miejscowość'), max_length = 50)
+    postal_code = models.CharField(_('Kod pocztowy'), max_length = 8)
+    phone = models.CharField(_('Telefon'), max_length = 13)
     email = models.EmailField(_('email'), )
 
     class Meta:
@@ -40,8 +40,8 @@ class WorkPlace(models.Model):
 
 
 class Position(models.Model):
-    name = models.CharField(_('name'), max_length = 150)
-    description = models.CharField(_('description'), blank = True, max_length = 300)
+    name = models.CharField(_('Nazwa'), max_length = 150)
+    description = models.CharField(_('Opis'), blank = True, max_length = 300)
 
     class Meta:
         verbose_name_plural = 'Stanowiska'
