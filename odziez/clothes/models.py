@@ -10,7 +10,7 @@ from employees.models import Employee, Position
 
 
 class Manufacturer(models.Model):
-    name = models.CharField(_("Nazwa Producetna"), max_length = 150, unique = True)
+    name = models.CharField(_('Nazwa'), max_length = 150, unique = True)
     email = models.EmailField()
 
     class Meta:
