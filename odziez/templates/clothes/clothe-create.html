@@ -5,9 +5,10 @@
 
 <h1>Dodaj ubranie do zamówienia.</h1>
 
-<p>{{ kind.name }} - {{ kind.description }}</p>
+<p>{{ kind.name }}</p>
+<p>{{ kind.description }}</p>
 <p>dla pracownika - {{ employee.name }} {{ employee.surname }}</p>
-<p>miejsce pracy - {{ employee.job.work_place.name }}</p>
+<p>miejsce pracy - {{ employee.work_place.name }}</p>
 
 <form action="#" method="post">
   {{ form.as_p }}
