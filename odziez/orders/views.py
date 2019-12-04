@@ -57,7 +57,7 @@ class OrderTemplateView(generic.TemplateView):
         manager = self.request.user.manager
         order, created = Order.objects.get_or_create(
             manager = manager,
-            place_of_delivery = manager.job.work_place,
+            place_of_delivery = manager.work_place,
             during_composing = True,)
         return order.pk
 
