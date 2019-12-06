@@ -8,6 +8,7 @@ class EmployeeForm(ModelForm):
         model = Employee
         fields = [
             'job',
+            'work_place',
             'sex',
             'name',
             'surname',
