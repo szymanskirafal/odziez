@@ -1,5 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
+from django.urls import reverse_lazy
 from django.utils.timezone import localdate
 from django.views import generic
 
@@ -13,6 +14,7 @@ from .models import Employee
 class EmployeeCreateView(generic.CreateView):
     form_class = EmployeeForm
     model = Employee
+    success_url = reverse_lazy('employees:employees')
     template_name = 'employees/add.html'
 
 
@@ -20,6 +22,7 @@ class EmployeeUpdateView(generic.UpdateView):
     context_object_name = 'employee'
     form_class = EmployeeForm
     model = Employee
+    success_url = reverse_lazy('employees:employees')
     template_name = 'employees/update.html'
 
 
