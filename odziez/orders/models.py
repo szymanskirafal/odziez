@@ -26,6 +26,7 @@ class Order(models.Model):
     date_of_receiving_from_manufacturer = models.DateField(_('date_of_receiving_from_manufacturer'), null = True, blank = True)
 
     class Meta:
+        verbose_name = 'Zamówienia'
         verbose_name_plural = 'Zamówienia'
 
     def get_absolute_url(self):
