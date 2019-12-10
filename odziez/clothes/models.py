@@ -22,17 +22,17 @@ class Manufacturer(models.Model):
 
 
 class KindOfClothe(models.Model):
-    name = models.CharField(_('name'), max_length = 150, unique = True)
-    description = models.CharField(_('description'), max_length = 300, blank = True)
-    months_to_exchange = models.PositiveSmallIntegerField(_('months_to_exchange'),)
+    name = models.CharField(_('Nazwa'), max_length = 150, unique = True)
+    description = models.CharField(_('Opis'), max_length = 300, blank = True)
+    months_to_exchange = models.PositiveSmallIntegerField(_('Czasokres wymiany w miesiącach'),)
     available_for = models.ManyToManyField(
         Position,
-        verbose_name = _('available_for'),
+        verbose_name = _('Dostęopne dla'),
         )
     manufacturer = models.ForeignKey(
         Manufacturer,
         on_delete = models.CASCADE,
-        verbose_name = _('Manufacturer'),
+        verbose_name = _('Producent'),
         )
 
     class Meta:
@@ -54,19 +54,19 @@ class Clothe(models.Model):
         KindOfClothe,
         on_delete = models.CASCADE,
         related_name = 'chosen',
-        verbose_name = _('kind'),
+        verbose_name = _('Rodzaj'),
         )
     order = models.ForeignKey(
         Order,
         on_delete = models.CASCADE,
         related_name = 'clothes_ordered',
-        verbose_name = _('order'),
+        verbose_name = _('Zamówienie'),
         )
     employee = models.ForeignKey(
         Employee,
         on_delete = models.CASCADE,
         related_name = 'clothes',
-        verbose_name = _('employee'),
+        verbose_name = _('Pracownik'),
         )
     prepared_to_order = models.BooleanField(null = False, blank = False, default = False)
     ordered = models.DateField(null = True, blank = True)
