@@ -50,26 +50,6 @@ class OrdersPreparedTemplateView(generic.TemplateView):
         return context
 
 
-class OrderTemplateView(generic.TemplateView):
-    template_name = "orders/redirect.html"
-
-    def get_order_pk(self):
-        manager = self.request.user.manager
-        order, created = Order.objects.get_or_create(
-            manager = manager,
-            place_of_delivery = manager.work_place,
-            during_composing = True,)
-        return order.pk
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        employee_pk = self.kwargs['employee_pk']
-        context['order'] = Order.objects.get(pk = self.get_order_pk())
-        context['employee'] = Employee.objects.get(pk = employee_pk)
-        context['kind'] = KindOfClothe.objects.get(pk = self.kwargs['kind_pk'])
-        return context
-
-
 class OrderSendUpdateView(generic.UpdateView):
 
     form_class = OrderSendToSupervisorUpdateForm
@@ -87,8 +67,7 @@ class OrderSendUpdateView(generic.UpdateView):
             subject = 'Zamówienie odzieży roboczej',
             body = 'W aplikacji jest nowe zamówienie',
             to = [supervisor.email],
-        )
-
+            )
         email.send()
         return super().form_valid(form)
 
@@ -105,6 +84,7 @@ class OrderSentToManufacturerListView(generic.ListView):
         orders = Order.objects.all().filter(manager = manager)
         orders = orders.filter(sent_to_manufacturer = True)
         return queryset
+
 
 class OrderSentDetailView(generic.DetailView):
     context_object_name = 'order'

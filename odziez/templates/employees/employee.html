@@ -14,7 +14,7 @@
 {% for kind in kinds_that_can_be_ordered %}
   <div class="jumbotron">
     <p>{{ kind.name }}</p>
-    <a class="btn btn-success" href="{% url 'orders:redirect' kind.pk employee.pk %}" role="button">Zamów</a>
+    <a class="btn btn-success" href="{% url 'clothes:clothe-create' kind.pk employee.pk %}" role="button">Zamów</a>
   </div>
 {% endfor %}
 

@@ -10,11 +10,6 @@ urlpatterns = [
         name="order-next-or-send",
     ),
     path(
-        "redirect/<int:kind_pk>/<int:employee_pk>/",
-        view=views.OrderTemplateView.as_view(),
-        name="redirect",
-    ),
-    path(
         "choose/",
         view=views.OrdersChooseTemplateView.as_view(),
         name="choose",

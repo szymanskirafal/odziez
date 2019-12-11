@@ -10,7 +10,7 @@ urlpatterns = [
         name="kinds",
     ),
     path(
-        "<int:kind_pk>/<int:order_pk>/<int:employee_pk>/",
+        "<int:kind_pk>/add-to-order/<int:employee_pk>/",
         view=views.ClotheCreateView.as_view(),
         name="clothe-create",
     ),

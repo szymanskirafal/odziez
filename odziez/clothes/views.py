@@ -23,7 +23,13 @@ class ClotheCreateView(generic.CreateView):
 
     def form_valid(self, form):
         form.instance.kind = KindOfClothe.objects.get(pk = self.kwargs['kind_pk'])
-        form.instance.order = Order.objects.get(pk = self.kwargs['order_pk'])
+        manager = self.request.user.manager
+        order, created = Order.objects.get_or_create(
+            manager = manager,
+            place_of_delivery = manager.work_place,
+            during_composing = True,
+            )
+        form.instance.order = order
         form.instance.employee = Employee.objects.get(pk = self.kwargs['employee_pk'])
         form.instance.prepared_to_order = True
         return super().form_valid(form)
