@@ -50,7 +50,7 @@ class ClotheDeleteView(generic.DeleteView):
         success_url = self.get_success_url()
         order = Order.objects.get(pk = self.object.order.pk)
         self.object.delete()
-        if not order.clothes_ordered.exists():
+        if not order.clothes_in_order.exists():
             order.delete()
         return HttpResponseRedirect(success_url)
 
