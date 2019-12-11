@@ -48,7 +48,7 @@ class ClotheDeleteView(generic.DeleteView):
         """
         self.object = self.get_object()
         success_url = self.get_success_url()
-        order = Order.objects.get(pk = self.object.order.pk)
+        order = self.object.order
         self.object.delete()
         if not order.clothes_in_order.exists():
             order.delete()
