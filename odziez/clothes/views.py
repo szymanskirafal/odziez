@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 from django.utils.timezone import localdate
@@ -38,7 +39,20 @@ class ClotheDeleteView(generic.DeleteView):
     context_object_name = 'clothe'
     model = Clothe
     template_name = "clothes/delete.html"
-    success_url = reverse_lazy('orders:prepared')
+    success_url = reverse_lazy('orders:choose')
+
+    def delete(self, request, *args, **kwargs):
+        """
+        Call the delete() method on the fetched object and then redirect to the
+        success URL.
+        """
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        order = Order.objects.get(pk = self.object.order.pk)
+        self.object.delete()
+        if not order.clothes_ordered.exists():
+            order.delete()
+        return HttpResponseRedirect(success_url)
 
 
 class ClotheDeliveredUpdateView(generic.UpdateView):

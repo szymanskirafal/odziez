@@ -59,7 +59,7 @@ class Clothe(models.Model):
     order = models.ForeignKey(
         Order,
         on_delete = models.CASCADE,
-        related_name = 'clothes_ordered',
+        related_name = 'clothes_in_order',
         verbose_name = _('Zamówienie'),
         )
     employee = models.ForeignKey(
