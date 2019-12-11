@@ -12,7 +12,7 @@
     {% csrf_token %}
     <p>{{ clothe.kind.name }}</p>
     <p>{{ clothe.kind.description }}</p>
-    <p>{{ clothe.employee.name }} {{ clothe.employee.surname }}</p>
+    <p>{{ clothe.employee.name }} {{ clothe.employee.surname }}, {{ clothe.employee.job }}</p>
 
 
     <input type="submit" class="btn btn-danger" value="Usuń">
