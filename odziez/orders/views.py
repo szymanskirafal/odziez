@@ -15,18 +15,32 @@ class OrdersChooseTemplateView(generic.TemplateView):
     template_name = "orders/choose.html"
 
     def get_order_during_composing(self):
-        orders = Order.objects.all()
-        orders = orders.filter(manager = self.request.user.manager.pk)
         try:
-            order_during_composing = orders.get(during_composing = True)
+            order_during_composing = self.orders.get(during_composing = True)
         except ObjectDoesNotExist:
             order_during_composing = None
         return order_during_composing
 
+    def get_orders_sent_to_supervisor_not_approved_yet(self):
+        orders = self.orders.filter(sent_to_supervisor = True)
+        orders = orders.filter(approved_by_supervisor = False)
+        return orders
+
+    def get_orders_waiting_for_delivery(self):
+        return self.orders.filter(sent_to_manufacturer = True)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        self.set_orders_for_current_manager()
         context['order_during_composing'] = self.get_order_during_composing()
+        context['orders_sent_to_supervisor'] = self.get_orders_sent_to_supervisor()
+        context['orders_waiting_for_delivery'] = self.get_orders_waiting_for_delivery()
         return context
+
+    def set_orders_for_current_manager(self):
+        orders = Order.objects.all()
+        orders = orders.filter(manager = self.request.user.manager.pk)
+        return self.orders = orders
 
 
 class OrderNextOrSendTemplateView(generic.TemplateView):
