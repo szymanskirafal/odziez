@@ -2,27 +2,38 @@
 
 {% block content %}
 
-
 <h1>Zamówienia</h1>
 <br><br>
+
+
 {% if order_during_composing %}
   <h3>Zamówienie, które przygotowujesz i nie wysłałeś jeszcze.</h3>
   <a class="btn btn-success btn-lg" href="{% url 'orders:prepared' %}" role="button">Bieżące zamówienie</a>
 {% else %}
   <p>Nie przygotowujesz żadnego zamówienia do wysłania póki co.</p>
-  <p>Możesz zobaczyć listę zamówień wysłanych do tej pory.</p>
 {% endif %}
 <hr>
+
+
+{% if orders_sent_to_supervisor %}
+  <h3>Zamówienia wysłane do Nadzorcy, jeszcze nie zatwierdzone.</h3>
+  <a class="btn btn-success btn-lg" href="#" role="button">Sprawdź</a>
+{% else %}
+  <p>Nie ma żadnego zamówienia, które nie zostało zatwierdzone przez Nadzorę.</p>
+{% endif %}
+<hr>
+
+
 {% if orders_waiting_for_delivery %}
   <h3>Zamówienia - oczekiwanie na dostawę.</h3>
   <a class="btn btn-primary" href="{% url 'orders:sent' %}" role="button">Sprawdź</a>
 {% else %}
   <p>Nie czekasz na dostawę żadnego zamówienia.</p>
 {% endif %}
-
 <hr>
+
+
 <h3>Wcześniejsze zamówienia.</h3>
 <a class="btn btn-primary" href="#" role="button">Wcześniejsze zamówienia</a>
-
 
 {% endblock content %}

@@ -11,36 +11,23 @@ from .forms import OrderSendToSupervisorUpdateForm
 from .models import Order
 
 
-class OrdersChooseTemplateView(generic.TemplateView):
-    template_name = "orders/choose.html"
-
-    def get_order_during_composing(self):
-        try:
-            order_during_composing = self.orders.get(during_composing = True)
-        except ObjectDoesNotExist:
-            order_during_composing = None
-        return order_during_composing
-
-    def get_orders_sent_to_supervisor_not_approved_yet(self):
-        orders = self.orders.filter(sent_to_supervisor = True)
-        orders = orders.filter(approved_by_supervisor = False)
-        return orders
-
-    def get_orders_waiting_for_delivery(self):
-        return self.orders.filter(sent_to_manufacturer = True)
+class OrdersListView(generic.ListView):
+    context_object_name = 'orders'
+    model = Order
+    template_name = "orders/orders.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        self.set_orders_for_current_manager()
-        context['order_during_composing'] = self.get_order_during_composing()
-        context['orders_sent_to_supervisor'] = self.get_orders_sent_to_supervisor()
-        context['orders_waiting_for_delivery'] = self.get_orders_waiting_for_delivery()
+        context['order_during_composing'] = self.queryset.filter(during_composing = True).exists()
+        context['orders_sent_to_supervisor'] = self.queryset.filter(sent_to_supervisor = True).exists()
+        context['orders_waiting_for_delivery'] = self.queryset.filter(sent_to_manufacturer = True).exists()
         return context
 
-    def set_orders_for_current_manager(self):
-        orders = Order.objects.all()
-        orders = orders.filter(manager = self.request.user.manager.pk)
-        return self.orders = orders
+    def get_queryset(self, **kwargs):
+        queryset = super().get_queryset(**kwargs)
+        manager = Manager.objects.get(pk = self.request.user.manager.pk)
+        self.queryset = Order.objects.all().filter(manager = manager)
+        return self.queryset
 
 
 class OrderNextOrSendTemplateView(generic.TemplateView):
@@ -65,7 +52,6 @@ class OrdersPreparedTemplateView(generic.TemplateView):
 
 
 class OrderSendUpdateView(generic.UpdateView):
-
     form_class = OrderSendToSupervisorUpdateForm
     model = Order
     success_url = reverse_lazy('employees:employees')
@@ -87,7 +73,6 @@ class OrderSendUpdateView(generic.UpdateView):
 
 
 class OrderSentToManufacturerListView(generic.ListView):
-
     context_object_name = 'orders'
     model = Order
     template_name = 'orders/sent-list.html'
@@ -95,8 +80,8 @@ class OrderSentToManufacturerListView(generic.ListView):
     def get_queryset(self, **kwargs):
         queryset = super().get_queryset(**kwargs)
         manager = Manager.objects.get(pk = self.request.user.manager.pk)
-        orders = Order.objects.all().filter(manager = manager)
-        orders = orders.filter(sent_to_manufacturer = True)
+        queryset = Order.objects.all().filter(manager = manager)
+        queryset = queryset.filter(sent_to_manufacturer = True)
         return queryset
 
 

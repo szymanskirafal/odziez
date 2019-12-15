@@ -4,15 +4,15 @@ from . import views
 
 app_name = "orders"
 urlpatterns = [
+    #path(
+    #    "",
+    #    view=views.OrderNextOrSendTemplateView.as_view(),
+    #    name="order-next-or-send",
+    #),
     path(
         "",
-        view=views.OrderNextOrSendTemplateView.as_view(),
-        name="order-next-or-send",
-    ),
-    path(
-        "choose/",
-        view=views.OrdersChooseTemplateView.as_view(),
-        name="choose",
+        view=views.OrdersListView.as_view(),
+        name="orders",
     ),
     path(
         "prepared/",

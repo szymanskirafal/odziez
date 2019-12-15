@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from employees.models import Manager, WorkPlace
 
+
 class Order(models.Model):
     manager = models.ForeignKey(
         Manager,
