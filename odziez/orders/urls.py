@@ -39,15 +39,4 @@ urlpatterns = [
         view=views.OrderSentDetailView.as_view(),
         name="sent-detail",
     ),
-
-
 ]
-
-"""
-
-path(
-    "sent/",
-    view=views.OrderSentTemplateView.as_view(),
-    name="sent",
-),
-"""
