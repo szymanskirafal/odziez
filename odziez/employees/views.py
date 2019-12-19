@@ -34,6 +34,8 @@ class EmployeeDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['kinds_that_can_be_ordered'] = self.get_kinds_that_can_be_ordered()
+        context['kinds_prepared_to_order'] = self.get_kinds_prepared_to_order()
+        context['kinds_that_can_not_be_ordered_yet'] = self.get_kinds_that_can_not_be_ordered_yet()
         return context
 
     def get_kinds_not_ordered_yet_but_availalble(self):
@@ -42,12 +44,10 @@ class EmployeeDetailView(generic.DetailView):
             (Q(available_for=self.object.job.position_1) | Q(available_for=self.object.job.position_2))
             )
 
-        clothes_ordered = Clothe.objects.all().filter(employee = self.object)
-
         kinds_ordered = set(
             clothe.kind
             for clothe
-            in clothes_ordered
+            in self.object.clothes.all()
             )
 
         return set(
@@ -58,7 +58,7 @@ class EmployeeDetailView(generic.DetailView):
             )
 
     def get_kinds_that_can_be_ordered_again_but_not_prepared_to_order(self):
-        clothes = self.object.clothes
+        clothes = self.object.clothes.all()
         clothes = clothes.filter(prepared_to_order = False)
         return set(
             clothe.kind
@@ -68,12 +68,28 @@ class EmployeeDetailView(generic.DetailView):
             )
 
     def get_kinds_that_can_be_ordered(self):
-        kinds = set(
+        return set(
             kind
             for kind
             in (self.get_kinds_that_can_be_ordered_again_but_not_prepared_to_order() | self.get_kinds_not_ordered_yet_but_availalble())
             )
-        return kinds
+
+    def get_kinds_that_can_not_be_ordered_yet(self):
+        return set(
+            clothe.kind
+            for clothe
+            in self.object.clothes.all()
+            if clothe.can_be_ordered_again == False
+            )
+
+    def get_kinds_prepared_to_order(self):
+        clothes = self.object.clothes.all()
+        clothes = clothes.filter(prepared_to_order = True)
+        return set(
+            clothe.kind
+            for clothe
+            in clothes
+            )
 
 
 class EmployeesListView(generic.ListView):
