@@ -45,7 +45,7 @@ class ClotheDeleteView(generic.DeleteView):
     context_object_name = 'clothe'
     model = Clothe
     template_name = "clothes/delete.html"
-    success_url = reverse_lazy('orders:choose')
+    success_url = '/orders/'
 
     def delete(self, request, *args, **kwargs):
         """
