@@ -62,13 +62,14 @@ class OrderSendUpdateView(generic.UpdateView):
         form.instance.composed = True
         form.instance.sent_to_supervisor = True
         form.instance.date_of_sending_to_supervisor = localdate()
-        supervisor = Supervisor.objects.first()
+        #supervisor = Supervisor.objects.first()
         #email = EmailMessage(
         #    subject = 'Zamówienie odzieży roboczej',
         #    body = 'W aplikacji jest nowe zamówienie',
         #    to = [supervisor.email],
         #    )
         #email.send()
+        print('------ date ', form.instance.date_of_sending_to_supervisor)
         return super().form_valid(form)
 
 
