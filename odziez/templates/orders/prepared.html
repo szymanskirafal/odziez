@@ -2,19 +2,17 @@
 
 {% block content %}
 
-
 <h1>Zamówienie przygotowane do wysłania.</h1>
 <h2>Zamówienie dla {{ order.place_of_delivery.name }}</h2>
 
-
 {% for clothe in clothes %}
   <div class="jumbotron">
-    <p>{{ clothe.kind.name }}</p>
-    <p>{{ clothe.kind.description }}</p>
-    <p>{{ clothe.employee.name }} {{ clothe.employee.surname }}, {{ clothe.employee.job }}</p>
+    <p>{{ clothe.kind__name }}, {{ clothe.employee__name }} {{ clothe.employee__surname }}</p>
     <a class="btn btn-danger" href="{% url 'clothes:delete' clothe.id %}" role="button">Usuń</a>
   </div>
+
 {% endfor %}
+
 
 <hr>
 

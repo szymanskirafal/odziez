@@ -43,12 +43,30 @@ class OrdersPreparedTemplateView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        manager = Manager.objects.get(pk = self.request.user.manager.pk)
-        orders = Order.objects.all().filter(manager = manager)
-        order = orders.get(during_composing = True)
-        context['order'] = order
-        context['clothes'] = Clothe.objects.all().filter(order = order)
+        context['order'] = self.get_order()
+        context['clothes'] = self.get_clothes()
         return context
+
+    def get_order(self):
+        orders = Order.objects.all()
+        orders = orders.filter(
+            manager = Manager.objects.get(pk = self.request.user.manager.pk)
+            )
+        orders = orders.select_related('place_of_delivery', )
+        self.order = orders.get(during_composing = True)
+        return self.order
+
+    def get_clothes(self):
+        clothes = Clothe.objects.all()
+        clothes = clothes.filter(order = self.order)
+        clothes = clothes.select_related('employee', 'kind', )
+        clothes = clothes.values(
+            'id',
+            'kind__name',
+            'employee__name',
+            'employee__surname',
+            )
+        return clothes
 
 
 class OrderSendUpdateView(generic.UpdateView):
