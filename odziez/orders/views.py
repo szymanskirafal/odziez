@@ -91,6 +91,42 @@ class OrderSendUpdateView(generic.UpdateView):
         return super().form_valid(form)
 
 
+class OrdersAtSupervisorListView(generic.ListView):
+    context_object_name = 'orders'
+    model = Order
+    template_name = 'orders/at-supervisor.html'
+
+    def get_queryset(self, **kwargs):
+        queryset = super().get_queryset(**kwargs)
+        manager = Manager.objects.get(pk = self.request.user.manager.pk)
+        queryset = Order.objects.all().filter(manager = manager)
+        queryset = queryset.filter(sent_to_supervisor = True)
+        queryset = queryset.filter(approved_by_supervisor = False)
+        return queryset
+
+class OrdersAtSupervisorDetailView(generic.DetailView):
+    context_object_name = 'order'
+    model = Order
+    template_name = 'orders/at-supervisor-detail.html'
+
+    def get_clothes(self):
+        clothes = Clothe.objects.all()
+        clothes = clothes.filter(order = self.get_object())
+        clothes = clothes.select_related('employee', 'kind', )
+        clothes = clothes.values(
+            'id',
+            'kind__name',
+            'employee__name',
+            'employee__surname',
+            )
+        return clothes
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['clothes'] = self.get_clothes()
+        return context
+
+
 class OrderSentToManufacturerListView(generic.ListView):
     context_object_name = 'orders'
     model = Order

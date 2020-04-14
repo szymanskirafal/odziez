@@ -20,6 +20,16 @@ urlpatterns = [
         name="prepared",
     ),
     path(
+        "at-supervisor/",
+        view=views.OrdersAtSupervisorListView.as_view(),
+        name="at-supervisor-list",
+    ),
+    path(
+        "at-supervisor/<int:pk>/",
+        view=views.OrdersAtSupervisorDetailView.as_view(),
+        name="at-supervisor-detail",
+    ),
+    path(
         "archived/",
         view=views.OrdersArchivedListView.as_view(),
         name="archived",
