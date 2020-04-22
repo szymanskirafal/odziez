@@ -72,6 +72,7 @@ class ClotheDeliveredUpdateView(generic.UpdateView):
         form.instance.received = localdate()
         form.instance.delivered_ok = True
         form.instance.in_use = True
+        print('--- ', form.instance)
         return super().form_valid(form)
 
     def get_success_url(self):

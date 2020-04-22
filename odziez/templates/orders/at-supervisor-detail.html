@@ -10,16 +10,7 @@
 
 {% for clothe in clothes %}
   <div class="shadow p-3 mb-5 bg-light rounded">
-    <h2 class="display-5">{{ clothe.kind__name }} dla {{ clothe.employee__name }} {{ clothe.employee__surname }}</h2>
-    <p>Ubranie dostarczono zgodnie z zamówieniem.</p>
-    <a class="btn btn-success" href="{% url 'clothes:delivered' clothe.id %}" role="button">Ubranie jest OK</a>
-    <hr>
-    <p>Ubranie dostarczono, ale nie takie, jak zamawiano lub wadliwe.</p>
-    <a class="btn btn-danger" href="{% url 'clothes:delivered_with_defects' clothe.id %}" role="button">Złe ubranie</a>
-    <hr>
-    <p>Nie dostarczono ubrania w ogóle.</p>
-    <a class="btn btn-danger" href="{% url 'clothes:not_delivered' clothe.id %}" role="button">Brak ubrania</a>
-
+    <p class="display-5">{{ clothe.kind__name }} dla {{ clothe.employee__name }} {{ clothe.employee__surname }}</p>
   </div>
 {% endfor %}
 

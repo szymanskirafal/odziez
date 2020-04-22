@@ -7,25 +7,32 @@
 <p>Zamówienie</p>
 <p>Zamawiający: {{ order.manager }}</p>
 <p>Data przysłania zamówienia: {{ order.date_of_sending_to_supervisor|date:"d - m - Y" }}</p>
-{% for clothe in order.clothes_ordered.all %}
+<hr>
+{% for clothe in clothes %}
   <div class="shadow p-3 mb-5 bg-light rounded">
-    <p>{{ clothe.kind.name }}</p>
-    <p>{{ clothe.employee }}</p>
-    {% for c in clothe.employee.clothes.all %}
-      {% if c.kind == clothe.kind %}
-        <h3>{{ c.kind.name }}</h3>
-        {% if c.ordered %}
-          <p>{{ c.ordered|date:"d - m - Y" }}</p> }
-        {% else %}
-          <p>Zamawiane pierwszy raz.</p>
-        {% endif %}
-        <p>{{ c.prepared_to_order|date:"d - m - Y" }}</p>
-        <a class="btn btn-danger" href="{% url 'supervisor:delete' clothe.pk %}" role="button">Usuń z zamówienia</a>
+    <p>{{ clothe.kind__name }} dla {{ clothe.employee__name}} {{ clothe.employee__surname}}</p>
 
+    {% for employee in employees %}
+      {% if clothe.employee__id is employee.id %}
+        {% for clothe_owned_by_employee in employee.clothes.all %}
+          {% if clothe.kind__name == clothe_owned_by_employee.kind.name %}
+
+            {% if clothe_owned_by_employee.ordered %}
+              <p>{{ clothe_owned_by_employee.ordered|date:"d - m - Y" }}</p>
+            {% else %}
+              <p>Nigdy wcześniej nie zamówione.</p>
+            {% endif %}
+
+          {% endif %}
+        {% endfor %}
       {% endif %}
     {% endfor %}
+
   </div>
 {% endfor %}
+
+<hr>
+
 <h3>Wyślij zamówienie do producenta.</h3>
 <a class="btn btn-success btn-lg" href="#" role="button">Wyślij</a>
 <br><br>

@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 
 from clothes.models import Clothe
+from employees.models import Employee
 from orders.models import Order
 
 class SupervisorPassesTestMixin(UserPassesTestMixin):
@@ -32,6 +33,33 @@ class SupervisorOrderDetailView(
     context_object_name = 'order'
     model = Order
     template_name = 'supervisor/order.html'
+
+    def get_clothes(self):
+        clothes = Clothe.objects.all()
+        clothes = clothes.filter(order = self.get_object())
+        clothes = clothes.select_related('employee', 'kind', )
+        clothes = clothes.values(
+            'employee__id',
+            'employee__name',
+            'employee__surname',
+            'kind__name',
+            )
+        return clothes
+
+    def get_employees(self):
+        employees = Employee.objects.all()
+        employees = employees.filter(work_place = self.get_work_place())
+        employees = employees.prefetch_related('clothes')
+        return employees
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['clothes'] = self.get_clothes()
+        context['employees'] = self.get_employees()
+        return context
+
+    def get_work_place(self):
+        return self.get_object().place_of_delivery
 
 
 class SupervisorDashboardTemplateView(
