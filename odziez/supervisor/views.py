@@ -49,13 +49,45 @@ class SupervisorOrderDetailView(
     def get_employees(self):
         employees = Employee.objects.all()
         employees = employees.filter(work_place = self.get_work_place())
+        return employees.prefetch_related('clothes')
+
+    def get_employees_values(self):
+        employees = Employee.objects.all()
+        employees = employees.filter(work_place = self.get_work_place())
+        #employees = employees.prefetch_related('clothes')
+        return employees.values()
+
+    def get_employees_with_prefetched(self):
+        employees = Employee.objects.all()
+        employees = employees.filter(work_place = self.get_work_place())
         employees = employees.prefetch_related('clothes')
-        return employees
+        employees_with_prefetched = employees.values(
+          'id',
+          'name',
+          'clothes__kind__name',
+          'clothes__prepared_to_order',
+          'clothes__ordered',
+          'clothes__received',
+          'clothes__delivered_ok',
+        )
+        print('--- ', type(employees_with_prefetched))
+        for fetched_dict in employees_with_prefetched:
+            for k,v in fetched_dict.items():
+                if v == 'Adam':
+                    print(' Mamy Adama')
+                    print(' clothes__kind__name: ', fetched_dict['clothes__kind__name'])
+                    print(' clothes__prepared_to_order: ', fetched_dict['clothes__prepared_to_order'])
+                    print(' clothes__ordered: ', fetched_dict['clothes__ordered'])
+                    print(' clothes__received: ', fetched_dict['clothes__received'])
+                    print(' clothes__delivered_ok: ', fetched_dict['clothes__delivered_ok'])
+        return employees_with_prefetched
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['clothes'] = self.get_clothes()
         context['employees'] = self.get_employees()
+        context['employees_values'] = self.get_employees_values()
+        context['employees_with_prefetched'] = self.get_employees_with_prefetched()
         return context
 
     def get_work_place(self):
