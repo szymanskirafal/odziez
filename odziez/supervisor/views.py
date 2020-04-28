@@ -2,10 +2,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils.timezone import localdate
 from django.views import generic
 
 from clothes.models import Clothe
 from employees.models import Employee
+from orders.forms import OrderSendToManufacturerForm
 from orders.models import Order
 
 class SupervisorPassesTestMixin(UserPassesTestMixin):
@@ -23,6 +25,19 @@ class SupervisorClotheDeleteView(generic.DeleteView):
     template_name = "clothes/delete.html"
     success_url = reverse_lazy('supervisor:dashboard')
 
+    def delete(self, request, *args, **kwargs):
+        """
+        Call the delete() method on the fetched object and then redirect to the
+        success URL.
+        """
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        order = self.object.order
+        self.object.delete()
+        if not order.clothes_in_order.exists():
+            order.delete()
+        return HttpResponseRedirect(success_url)
+
 
 class SupervisorOrderDetailView(
     LoginRequiredMixin,
@@ -38,60 +53,72 @@ class SupervisorOrderDetailView(
         clothes = Clothe.objects.all()
         clothes = clothes.filter(order = self.get_object())
         clothes = clothes.select_related('employee', 'kind', )
-        clothes = clothes.values(
+        return clothes.values(
+            'id',
             'employee__id',
             'employee__name',
             'employee__surname',
             'kind__name',
             )
-        return clothes
-
-    def get_employees(self):
-        employees = Employee.objects.all()
-        employees = employees.filter(work_place = self.get_work_place())
-        return employees.prefetch_related('clothes')
-
-    def get_employees_values(self):
-        employees = Employee.objects.all()
-        employees = employees.filter(work_place = self.get_work_place())
-        #employees = employees.prefetch_related('clothes')
-        return employees.values()
 
     def get_employees_with_prefetched(self):
         employees = Employee.objects.all()
         employees = employees.filter(work_place = self.get_work_place())
-        employees = employees.prefetch_related('clothes')
-        employees_with_prefetched = employees.values(
-          'id',
-          'name',
-          'clothes__kind__name',
-          'clothes__prepared_to_order',
-          'clothes__ordered',
-          'clothes__received',
-          'clothes__delivered_ok',
-        )
-        print('--- ', type(employees_with_prefetched))
-        for fetched_dict in employees_with_prefetched:
-            for k,v in fetched_dict.items():
-                if v == 'Adam':
-                    print(' Mamy Adama')
-                    print(' clothes__kind__name: ', fetched_dict['clothes__kind__name'])
-                    print(' clothes__prepared_to_order: ', fetched_dict['clothes__prepared_to_order'])
-                    print(' clothes__ordered: ', fetched_dict['clothes__ordered'])
-                    print(' clothes__received: ', fetched_dict['clothes__received'])
-                    print(' clothes__delivered_ok: ', fetched_dict['clothes__delivered_ok'])
-        return employees_with_prefetched
+        employees = employees.prefetch_related('clothes', )
+        return employees.values(
+            'id',
+            'name',
+            'clothes__kind__name',
+            'clothes__prepared_to_order',
+            'clothes__ordered',
+            'clothes__received',
+            'clothes__delivered_ok',
+            )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['clothes'] = self.get_clothes()
-        context['employees'] = self.get_employees()
-        context['employees_values'] = self.get_employees_values()
         context['employees_with_prefetched'] = self.get_employees_with_prefetched()
         return context
 
     def get_work_place(self):
         return self.get_object().place_of_delivery
+
+
+class SupervisorOrderUpdateView(
+    LoginRequiredMixin,
+    SupervisorPassesTestMixin,
+    generic.UpdateView,
+    ):
+
+    context_object_name = 'order'
+    form_class = OrderSendToManufacturerForm
+    model = Order
+    success_url = reverse_lazy('supervisor:sent')
+    template_name = 'supervisor/send.html'
+
+    def form_valid(self, form):
+        form.instance.approved_by_supervisor = True
+        form.instance.sent_to_manufacturer = True
+        form.instance.date_of_sending_to_manufacturer = localdate()
+        #supervisor = Supervisor.objects.first()
+        #email = EmailMessage(
+        #    subject = 'Zamówienie odzieży roboczej',
+        #    body = 'W aplikacji jest nowe zamówienie',
+        #    to = [supervisor.email],
+        #    )
+        #email.send()
+        print('------ date ', form.instance.date_of_sending_to_manufacturer)
+        return super().form_valid(form)
+
+
+class SupervisorOrderSentTemplateView(
+    LoginRequiredMixin,
+    SupervisorPassesTestMixin,
+    generic.TemplateView,
+    ):
+
+    template_name = "supervisor/sent.html"
 
 
 class SupervisorDashboardTemplateView(

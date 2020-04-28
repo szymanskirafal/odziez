@@ -60,13 +60,12 @@ class OrdersPreparedTemplateView(generic.TemplateView):
         clothes = Clothe.objects.all()
         clothes = clothes.filter(order = self.order)
         clothes = clothes.select_related('employee', 'kind', )
-        clothes = clothes.values(
+        return clothes.values(
             'id',
             'kind__name',
             'employee__name',
             'employee__surname',
             )
-        return clothes
 
 
 class OrderSendUpdateView(generic.UpdateView):
@@ -113,13 +112,12 @@ class OrdersAtSupervisorDetailView(generic.DetailView):
         clothes = Clothe.objects.all()
         clothes = clothes.filter(order = self.get_object())
         clothes = clothes.select_related('employee', 'kind', )
-        clothes = clothes.values(
+        return clothes.values(
             'id',
             'kind__name',
             'employee__name',
             'employee__surname',
             )
-        return clothes
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

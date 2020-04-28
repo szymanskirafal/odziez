@@ -15,9 +15,20 @@ urlpatterns = [
         name="order",
     ),
     path(
+        "order/<int:pk>/send/",
+        view=views.SupervisorOrderUpdateView.as_view(),
+        name="send",
+    ),
+    path(
+        "order/sent/",
+        view=views.SupervisorOrderSentTemplateView.as_view(),
+        name="sent",
+    ),
+    path(
         "order/clothe/<int:pk>",
         view=views.SupervisorClotheDeleteView.as_view(),
-        name="delete",
+        name="delete-clothe",
     ),
+
 
 ]

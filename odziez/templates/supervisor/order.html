@@ -20,15 +20,19 @@
           <p>Ordered: {{ prefetched_dict.clothes__ordered }}</p>
           <p>Received: {{ prefetched_dict.clothes__received }}</p>
           <p>Delivered_ok: {{ prefetched_dict.clothes__delivered_ok }}</p>
+          <p>Owned: {{ prefetched_dict.clothes__owned }}</p>
+          <p>In use: {{ prefetched_dict.clothes__in_use }}</p>
+          <p>Destroyed: {{ prefetched_dict.clothes__destroyed }}</p>
         {% endif %}
       {% endif %}
     {% endfor %}
+    <a class="btn btn-danger" href="{% url 'supervisor:delete-clothe' clothe.id %}" role="button">Usuń</a>
   </div>
 {% endfor %}
 
 
 <h3>Wyślij zamówienie do producenta.</h3>
-<a class="btn btn-success btn-lg" href="#" role="button">Wyślij</a>
+<a class="btn btn-success btn-lg" href="{% url 'supervisor:send' order.id %}" role="button">Wyślij</a>
 <br><br>
 
 
