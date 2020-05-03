@@ -130,6 +130,7 @@ TEMPLATES[0]["OPTIONS"]["loaders"] = [  # noqa F405
 DEFAULT_FROM_EMAIL = env(
     "DJANGO_DEFAULT_FROM_EMAIL", default="Odziez <noreply@odziez.herokuapp.com>"
 )
+
 # https://docs.djangoproject.com/en/dev/ref/settings/#server-email
 SERVER_EMAIL = env("DJANGO_SERVER_EMAIL", default=DEFAULT_FROM_EMAIL)
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-subject-prefix
@@ -215,3 +216,6 @@ sentry_sdk.init(dsn=SENTRY_DSN, integrations=[sentry_logging, DjangoIntegration(
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+DEFAULT_TO_EMAIL = env(
+    "DJANGO_DEFAULT_TO_EMAIL", default="Odziez <noreply@odziez.herokuapp.com>"
+)

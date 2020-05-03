@@ -62,3 +62,6 @@ INSTALLED_APPS += ["django_extensions"]  # noqa F405
 # Your stuff...
 # ------------------------------------------------------------------------------
 DJANGO_READ_DOT_ENV_FILE=True
+DEFAULT_TO_EMAIL = env(
+    "DJANGO_DEFAULT_TO_EMAIL", default="Odziez <noreply@odziez.herokuapp.com>"
+)

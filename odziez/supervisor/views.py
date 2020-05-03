@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import EmailMessage
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.timezone import localdate
@@ -101,13 +103,15 @@ class SupervisorOrderUpdateView(
         form.instance.approved_by_supervisor = True
         form.instance.sent_to_manufacturer = True
         form.instance.date_of_sending_to_manufacturer = localdate()
-        #supervisor = Supervisor.objects.first()
-        #email = EmailMessage(
-        #    subject = 'Zamówienie odzieży roboczej',
-        #    body = 'W aplikacji jest nowe zamówienie',
-        #    to = [supervisor.email],
-        #    )
-        #email.send()
+        from_email =  getattr(settings, "DEFAULT_FROM_EMAIL")
+        to =  getattr(settings, "DEFAULT_TO_EMAIL")
+        email = EmailMessage(
+            subject = 'Zamówienie odzieży roboczej',
+            body = 'W aplikacji jest nowe zamówienie',
+            from_email = from_email,
+            to = [to, ]
+        )
+        email.send()
         print('------ date ', form.instance.date_of_sending_to_manufacturer)
         return super().form_valid(form)
 
