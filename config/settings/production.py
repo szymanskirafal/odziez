@@ -219,3 +219,11 @@ sentry_sdk.init(dsn=SENTRY_DSN, integrations=[sentry_logging, DjangoIntegration(
 DEFAULT_TO_EMAIL = env(
     "DJANGO_DEFAULT_TO_EMAIL", default="Odziez <noreply@odziez.herokuapp.com>"
 )
+
+FAKE_MANUFACTURER_EMAIL = env(
+    "FAKE_MANUFACTURER_EMAL",
+)
+
+FAKE_SUPERVISOR_EMAIL = env(
+    "FAKE_SUPERVISOR_EMAIL",
+)
