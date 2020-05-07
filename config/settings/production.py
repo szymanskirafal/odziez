@@ -220,7 +220,7 @@ DEFAULT_TO_EMAIL = env(
     "DJANGO_DEFAULT_TO_EMAIL", default="Odziez <noreply@odziez.herokuapp.com>"
 )
 
-#FAKE_MANUFACTURER_EMAIL = env(
+# FAKE_MANUFACTURER_EMAIL = env(
 #    "FAKE_MANUFACTURER_EMAL",
 #)
 
