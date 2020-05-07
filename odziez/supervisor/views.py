@@ -114,7 +114,6 @@ class SupervisorOrderUpdateView(
             body = 'W aplikacji jest nowe zamówienie',
             from_email = from_email,
             to = [to, ],
-            bcc = ['r.szymansky@gmail.com', ],
         )
         email.send()
         return super().form_valid(form)
